@@ -1,0 +1,1789 @@
+HHS Public Access
+Author manuscript
+Author Manuscript
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+Published in final edited form as:
+Stat Med. 2024 July 10; 43(15): 2853–2868. doi:10.1002/sim.10102.
+
+G-Formula for Observational Studies under Stratified
+Interference, with Application to Bed Net Use on Malaria
+Kayla W. Kilpatrick1, Chanhwa Lee2, Michael G. Hudgens*,2
+1Department of Biostatistics and Bioinformatics, Duke University, Durham, North Carolina, U.S.A.
+2Department of Biostatistics, University of North Carolina, Chapel Hill, North Carolina, U.S.A.
+
+Author Manuscript
+
+Summary
+
+Author Manuscript
+
+Assessing population-level effects of vaccines and other infectious disease prevention measures
+is important to the field of public health. In infectious disease studies, one person’s treatment
+may affect another individual’s outcome, i.e., there may be interference between units. For
+example, the use of bed nets to prevent malaria by one individual may have an indirect effect
+on other individuals living in close proximity. In some settings, individuals may form groups or
+clusters where interference only occurs within groups, i.e., there is partial interference. Inverse
+probability weighted estimators have previously been developed for observational studies with
+partial interference. Unfortunately, these estimators are not well suited for studies with large
+clusters. Therefore, in this paper, the parametric g-formula is extended to allow for partial
+interference. G-formula estimators are proposed for overall effects, effects when treated, and
+effects when untreated. The proposed estimators can accommodate large clusters and do not suffer
+from the g-null paradox that may occur in the absence of interference. The large sample properties
+of the proposed estimators are derived assuming no unmeasured confounders and that the partial
+interference takes a particular form (referred to as ‘weak stratified interference’). Simulation
+studies are presented demonstrating the finite-sample performance of the proposed estimators. The
+Demographic and Health Survey from the Democratic Republic of the Congo is then analyzed
+using the proposed g-formula estimators to assess the effects of bed net use on malaria.
+
+Keywords
+Causal inference; G-formula; Herd immunity; Observational studies
+
+Author Manuscript
+
+1∣
+
+INTRODUCTION
+In settings where individuals interact or are connected, one individual’s treatment status may
+affect another individual’s outcome, i.e., interference may be present between individuals1.
+Interference is common in infectious disease research. For instance, if one individual wears a
+mask, this could affect whether another individual develops COVID-19. In some settings, it
+may be reasonable to assume that individuals within a cluster (or group) may interfere with
+one another, but not with individuals in other clusters, i.e., there is partial (or clustered)
+
+*
+
+Correspondence Michael G. Hudgens, Department of Biostatistics, University of North Carolina, Chapel Hill, North Carolina,
+U.S.A., mhudgens@email.unc.edu.
+
+Kilpatrick et al.
+
+Page 2
+
+Author Manuscript
+
+interference2. Clusters might entail households, villages, schools, or other hierarchical
+structures. For instance, when assessing the effect of an intervention or exposure in students,
+it may be reasonable to assume no interference between students in different schools. Under
+this partial interference setting, several methods have been proposed for drawing inference
+about causal estimands of treatment effects; e.g., Tchetgen Tchetgen and VanderWeele3,
+Papadogeorgou et al.4, Barkley et al.5 and Park and Kang6.
+
+Author Manuscript
+Author Manuscript
+
+In the presence of interference, it is of interest to assess the effect of policies that alter
+the distribution of treatment in the population. For instance, in the Democratic Republic
+of the Congo, public health officials and policymakers may be interested in estimates of
+malaria risk for different levels of bed net usage in the population. In observational studies
+where partial interference is present, it may be unlikely that treatment selection among
+individuals in the same cluster is independent. For example, in household studies of vaccine
+effects, we might expect vaccine uptake to be positively correlated between individuals in
+the same household. Therefore, estimands that will be most relevant to policymakers need
+to account for possible within-cluster treatment selection dependence. Papadogeorgou et al.
+4 and Barkley et al. 5 proposed such estimands and developed corresponding inferential
+methods using inverse probability weighted (IPW) estimators. These IPW estimators entail
+inverse weighting by an estimated group propensity score. Unfortunately, this approach is
+not well suited for large groups, because, in practice, the estimated group propensity score
+is often computed by multiplying individual propensity score estimates across individuals
+within the same cluster. When clusters are large, this product of individual propensity scores
+(each of which is between 0 and 1) will tend to be very small. In the absence of interference,
+a commonly used alternative to the IPW estimator is the parametric g-formula, which entails
+combining outcome regression and standardization7,8. This paper proposes an extension of
+the parametric g-formula for observational studies where partial interference may be present,
+which is better suited for large clusters compared to IPW.
+
+Author Manuscript
+
+The proposed methods were motivated by the 2013-14 Democratic Republic of the Congo
+(DRC) Demographic and Health Survey (DHS), a nationally representative survey to
+gather information about fertility, maternal and child health, sexually transmitted infections,
+mosquito net (hereafter “bed net”) usage, malaria, and other health information9. In the
+analysis presented below, population-level effects of bed net use on malaria are assessed
+using data from the DRC DHS. Figure 1 displays province-level bed net use and the
+proportion of children who did not use bed nets with malaria. The DHS data were
+collected at the household level. For the analysis here, a single linkage agglomerative
+cluster method was used to group individuals into clusters based on their household global
+positioning system (GPS) coordinates, resulting in a total of 395 clusters with at least
+one child and measured spatial information and other covariates. After performing this
+clustering algorithm, covariates and bed net use data are available for approximately 87,500
+individuals. Malaria outcome data is available for about 7,500 children between 6 to 59
+months (for brevity, henceforth referred to as "children"). Among the clusters with at least
+one child who did not use a bed net, the prevalence of malaria in children who did not
+use bed nets is inversely associated with the proportion of bed net usage in the cluster
+(Spearman correlation rs = − 0.16, p = 0.002), suggesting the possibility of interference
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 3
+
+Author Manuscript
+
+within clusters. Because malaria is spread between humans via the Anopheles mosquito,
+interference is epidemiologically plausible in this setting; e.g., if an individual with malaria
+elects to use a bed net, then the likelihood of a mosquito transmitting malaria from that
+individual to another individual may be decreased. Previously, Levitz et al.10 showed that
+community-level bed net usage was significantly associated with protection against malaria
+in children younger than five years old. The inferential goal of this paper is to assess the
+population-level effects of bed use on malaria while allowing for possible within-cluster
+interference.
+
+Author Manuscript
+
+The outline of the remainder of this paper is as follows. Section 2 presents the proposed
+extension of the g-formula to allow for partial interference. Section 3 presents the simulation
+results evaluating the performance of the proposed methods in finite samples. In Section 4,
+the proposed estimators are employed to assess the effect of bed net use on malaria using
+data from the DRC DHS. Section 5 concludes with a discussion.
+
+2∣
+
+METHODS
+
+2.1 ∣
+
+Estimands and Effects of Interest
+Suppose data is observed on m clusters of individuals, and let Ni denote the number
+of individuals in cluster i. Suppose some individuals within each cluster may receive
+treatment (e.g., bed net) and denote the vector of binary treatment indicators in cluster i
+as Ai = (Ai1, Ai2, …, AiNi) with Aij representing the treatment indicator for individual j. Let
+N
+
+Si = (∑j =i 1 Aij) ∕ Ni denote the proportion of treated individuals in cluster i. Let Y i represent
+
+Author Manuscript
+
+the outcome at the cluster level. In general, Y i may be defined differently depending on
+the outcome of interest. For example, in the analysis of the DRC data, Y i may be defined
+as the proportion of children in a cluster with malaria. Let Li represent a vector of clusterlevel baseline covariates, including Ni. The covariate vector Li may include summaries of
+individual-level covariates, such as the average age of individuals within the cluster. Let
+Oi = {Li, Si, Y i} be the observed random variables for cluster i, and assume O1, …, Om are
+independent and identically distributed. For notational simplicity, the subscript i is omitted
+when not needed.
+
+Author Manuscript
+
+Assume partial interference, i.e., there is no interference between clusters, but there may be
+interference between individuals within the same cluster. For example, one individual’s bed
+net usage may affect whether or not another individual in the same cluster gets malaria. In
+the DRC analysis, clusters are defined according to household geographical location. Thus,
+the partial interference assumption is biologically plausible as the Anopheles mosquito has
+a limited flight range (< 10 kilometers) and life span (< one month), such that interference
+(if present) is likely restricted to individuals within the same cluster. Let A(Ni) denote the
+set of all vectors of length Ni with binary entries such that ai = (ai1, ai2, …, aiNi) ∈ A(Ni) is a
+vector of possible treatment statuses for a cluster of size Ni. For cluster i, let Y i(ai) represent
+the potential outcome if, possibly counter to fact, the cluster had been exposed to ai ∈ A(Ni),
+such that Y i(ai) = Y i when Ai = ai.
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 4
+
+Author Manuscript
+Author Manuscript
+
+Population-level effects of interventions such as bed nets can be defined by differences
+in expected potential outcomes when the distribution of treatment is altered. For example,
+in the absence of interference, the effect of treatment is often defined by the difference
+in expected outcomes when all individuals receive treatment versus when no individuals
+receive treatment. Here we consider stochastic policies where individuals receive treatment
+with some probability between 0 and 1. Define policy α to be the setting where the expected
+proportion of individuals in a cluster who receive treatment is α, i.e., Eα(S) = α, where
+in general the subscript α denotes the counterfactual scenario in which the policy α is
+implemented. For example, P α(A = a ∣ L = l) denotes the conditional probability of treatment
+given covariates l in the counterfactual scenario in which policy α is implemented. There are
+various ways to define the counterfactual treatment allocation probability P α(A = a ∣ L = l),
+and the specific policy α considered in this work is described in Section 2.2. Unlike
+stochastic policies previously considered in the absence of interference, e.g., Muñoz and Van
+Der Laan11, Kennedy12, Wen et al.13, the policy considered here allows for within-cluster
+treatment selection dependence. For more discussion on other stochastic policies in the
+presence of partial interference, refer to Lee et al.14. The DRC analysis below considers
+policies where different proportions of individuals use bed nets.
+Under policy α, the treatment assignment within a cluster is allowed to be stochastic,
+governed by a distribution on A which may vary across clusters depending on clusterlevel covariates L. For the stratum of clusters in the population defined by L = l
+with the cluster size n, the expected potential outcome under policy α is defined by
+∑a ∈ A(n) E Y (a) ∣ L = l P α(A = a ∣ L = l). Here, the conditional expectation of the potential
+
+Author Manuscript
+
+outcome Y (a) at stratum of L = l is averaged over all a ∈ A(n), with corresponding
+probabilities P α A = a ∣ L = l . Then, the average potential outcome in the population under
+policy α is defined as
+μ(α) =
+
+∫ a ∈∑A(n) E{Y (a) ∣ L = l}P (A = a ∣ L = l)d F (l)
+α
+
+L
+
+l
+
+(1)
+
+where F L denotes the distribution of baseline covariates L. Effects of interest can be defined
+by contrasts in μα for two policies α and α′, e.g.,
+δ(α, α′) = μα − μα′ .
+(2)
+
+Author Manuscript
+
+Here, effects are defined as a difference in average potential outcomes, but ratios or other
+contrasts could be used instead. A primary contrast of interest in the DRC analysis is the
+difference in the proportion of children infected with malaria under policies α versus α′.
+In the DRC analysis, we will consider three different effects of bed nets: the overall effect,
+the effect when treated, and the effect when untreated. All three effects have the form (2)
+but differ in how Y i is defined. The overall effect compares the average outcome among all
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 5
+
+Author Manuscript
+
+individuals in a cluster under policies α versus α′. As it is likely that populations of interest
+will include a mixture of individuals who would and who would not choose to receive
+treatment, the overall effect may be valuable for public health officials and policymakers
+in assessing the overall impact of increasing treatment coverage among a population. For
+inference about the overall effect, Y i is a summary measure of outcomes in all individuals in
+cluster i. For the malaria data analysis, Y i is defined to be the proportion of all children in a
+cluster with malaria.
+
+Author Manuscript
+
+Two additional treatment effects are also considered. The effect when untreated contrasts
+average outcomes when an individual is untreated under policy α versus policy α′. For this
+effect, Y i may be defined by some summary measure of outcomes in untreated individuals.
+In the DRC analysis of the effect in the untreated, Y i will be defined as the proportion of
+children who do not use bed nets with malaria. If there are no untreated individuals in the
+cluster, we adopt the convention Y i = 0 because no untreated individuals had malaria in those
+clusters. Similarly, the effect when treated contrasts average outcomes when an individual is
+treated under policy α versus policy α′. For the effect when treated in the DRC analysis, Y i
+will be the proportion of children who use bed nets with malaria, with Y i = 0 in clusters with
+no treated individuals.
+
+Author Manuscript
+
+Causal effects are, in general, defined by contrasts in potential outcomes over the same set
+of units15. In this paper, the units are defined to be clusters. While it is natural in many
+settings to define units as persons or individuals, in the setting considered here, defining
+units as clusters simplifies matters. In particular, this approach avoids complexities that arise
+when defining potential outcomes at the individual level, such as nuances regarding casual
+estimand definitions16,17, and drawing inference in a manner that appropriately allows for
+within-cluster correlation.
+Note the effects as defined here could be non-zero due to interference or dependence
+between individuals’ treatment propensity and risk of the outcome. For instance, suppose
+there is no interference and that individuals with a lower risk of some binary outcome are,
+in general, less likely to get treatment. Then, as the policy α tends toward 1, only those with
+the smallest outcome risk will be untreated, such that the mean outcome in the untreated will
+decrease even in the absence of interference. Nonetheless, the effects defined here could be
+of interest to policymakers or from a public health perspective, as these effects describe how
+the average outcome changes across policies.
+2.2 ∣
+
+Assumptions and Identifiability
+
+Author Manuscript
+
+The following assumptions are made to identify the estimands described above:
+Assumption 1 (Consistency). Y i(ai) = Y i when Ai = ai.
+Assumption 2 (Conditional exchangeability). Y i(ai) ⫫ Ai ∣ Li for all ai ∈ A(Ni).
+The consistency and conditional exchangeability assumptions are analogous to the
+assumptions commonly made at the individual level when drawing causal inferences in
+the absence of interference, with the key distinction being that here these assumptions are
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 6
+
+Author Manuscript
+
+applied at the cluster level. As in the setting where there is no interference, selection of
+the covariates L such that conditional exchangeability is plausible in a particular application
+may be informed by subject matter knowledge. Causal graphs18, where the nodes/vertices
+represent cluster-level random variables, may also be used to determine sufficient sets of
+covariates L for which conditional exchangeability holds. As discussed in the previous
+section, the outcome Y may be defined differently depending on the effect of interest. Thus,
+the plausibility of the exchangeability assumption and selection of the particular covariates L
+may differ depending on the choice of Y . Section 4 discusses the exchangeability assumption
+in the context of the malaria example.
+Assumption 3 (Weak stratified interference). E Y i(ai) ∣ Li = E Y i(a′i) ∣ Li for all ai,
+N
+
+N
+
+a′i ∈ A(Ni) such that ∑j =i 1 aij = ∑j =i 1 aij′ .
+
+Author Manuscript
+
+The weak stratified interference (WSI) assumption supposes that the conditional expectation
+of the cluster-level potential outcome given L depends only on the proportion of individuals
+treated, but not which particular individuals receive treatment. This assumption is weaker
+than the usual “stratified interference”19 assumption, which stipulates that Y i(ai) = Y i(a′i)
+N
+
+N
+
+for any two vectors ai, a′i ∈ A(Ni) such that ∑j =i 1 aij = ∑j =i 1 aij′ . The stratified interference
+assumption might be unrealistic in some settings, hence, in this paper, WSI is assumed
+instead. WSI is a weaker assumption in that stratified interference implies WSI, but that
+WSI may also hold in settings where stratified interference does not. Note that assuming
+WSI does not resolve the issue of very small cluster-level propensity scores in large
+clusters; however, under WSI the proposed method permits inference without using inverse
+probability weighting and thus avoids the extreme cluster-level propensity score issue.
+
+Author Manuscript
+
+Assumption 4 (S model). Let π = π(L; ρ) = g−1(ρ0 + ρT1 L), where g is some invertible, userspecified link function such as logit or probit, and ρ = (ρ0, ρT1 )T. Assume
+P (S = s ∣ L) = P (S = s ∣ L; ρ) =
+
+N Ns
+π (1 − π)N − Ns .
+Ns
+(3)
+
+Note (3) will hold if Aij ∣ Li for j = 1, …, Ni are i.i.d. Bernoulli random variables with
+expectation π(Li), respectively. In this case, Aij ⊥ Aik ∣ Li, i.e., the treatment selection of two
+individuals within the same cluster is conditionally independent. This does not, however,
+imply marginal independence, i.e., Aij ⊥ Aik. Moreover, provided ρ1 ≠ 0, in general we would
+
+Author Manuscript
+
+expect marginal dependence between Aij and Aik. While (3) is assumed in the rest of this
+paper, alternative parametric models for the conditional distribution of S given L could be
+assumed instead.
+Suppose we are interested in causal estimands corresponding to a counterfactual policy α
+where the distribution of S is modified such that α proportion of individuals are treated on
+average. In particular, motivated by (3), suppose we would like to draw an inference about
+the counterfactual scenario where
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 7
+
+Author Manuscript
+
+N Ns
+πα (1 − πα)N − Ns,
+Ns
+
+P α(S = s ∣ L) = P α(S = s ∣ L; γ) =
+
+(4)
+
+where πα = g−1(γ0α + γT1αL) and γ = (γ0α, γT1α)T such that Eα(S) = α. The parameter ρ in (3) is
+identifiable from the observable data, whereas the counterfactual parameter γ in (4) are
+not identifiable without additional assumptions. As in Barkley et al.,5 assume ρ1 = γ1α;
+this assumption implies rank preservation between clusters in treatment propensity. In
+other words, if treatment adoption is more likely in cluster i than cluster j, then under
+counterfactual policy α, treatment adoption will also be more likely in cluster i than cluster j.
+Then, γ0α is obtained from the relationship Eα(S) = α, by solving the equation
+
+Author Manuscript
+
+∫ E (S ∣ L = l; γ , ρ )d F (l) − α = 0
+α
+
+0α
+
+L
+
+1
+
+l
+
+(5)
+
+where Eα(S ∣ L = l; γ0α, ρ1) = g−1(γ0α + ρT1 l).
+Assumption 5 (Y model). Let η = ℎ−1(β0 + βT1 L + β2S) where ℎ is some invertible, userspecified link function, and β = (β0, βT1 , β2)T. Assume
+E(Y ∣ S = s, L = l) = E(Y ∣ S = s, L = l; β) = η .
+(6)
+
+Author Manuscript
+
+Note assumption 5 only supposes that the conditional expectation of Y given S and L has
+a parametric form, with no additional assumptions placed on the conditional distribution
+of Y . For simplicity, an interaction between S and L is omitted from the model of
+E(Y ∣ S = s, L = l) but could be included. For the analysis in Section 4, binomial regression
+with the link functions g = ℎ = logit are used for the treatment and outcome models.
+Under assumptions 1-4, the causal estimands (1) and (2) are identifiable, i.e., can
+be expressed as functions of the distribution of the observed random variables. In
+particular, from consistency, conditional exchangeability, and WSI, it follows that
+N
+E{Y i(ai) ∣ Li} = E{Y i ∣ Ai = ai, Li} = E{Y i ∣ Si = ai, Li}, where ai = Ni−1 ∑j =i 1 aij. Therefore, we
+
+Author Manuscript
+
+have the identifiability of μ(α) as follows:
+μ(α) =
+
+∫ a ∈∑A(n) E{Y (a) ∣ L = l}P (A = a ∣ L = l)d F (l)
+α
+
+l
+=
+
+L
+
+E(Y ∣ S = a, L = l)P (A = a ∣ L = l)d F (l)
+∫ s ∈∑S(n) a: ∑
+a=s
+α
+
+L
+
+l
+=
+
+∫ s ∈∑S(n) E(Y ∣ S = s, L = l)P (S = s ∣ L = l)d F (l)
+α
+
+l
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+L
+
+Kilpatrick et al.
+
+Page 8
+
+Author Manuscript
+
+where S(n) = {0 ∕ n, 1 ∕ n, …, n ∕ n}, and E Y ∣ S = s, L = l and F L(l) are identifiable from
+the observed data Oi = {Li, Si, Y i}, i = 1, …, m, and P α S = s ∣ L = l is also identifiable since
+
+the parameters ρ, γ0α, and thus πα = g−1(γ0α + ρT1 L) are identifiable. The identifiability of the
+causal effect δ(α, α′) can be shown similarly. Note the assumption 5 is not required for
+identifiability, but it is assumed to facilitate inference as described in the next section.
+2.3 ∣
+
+Inference
+Estimators for μ(α) can be constructed as follows. First estimate the parameters ρ = (ρ0, ρT1 )T
+of model (3) and β = (β0, βT1 , β2)T of model (6) via maximum likelihood; denote these
+T
+
+T
+
+T
+
+estimators by ρ = (ρ 0, ρT1 ) and β = (β 0, β1 , β 2) . Next, for a given policy α, let γ 0α denote the
+estimator of γ0α obtained by finding the solution to (5) with F L replaced by its empirical
+
+Author Manuscript
+
+distribution, i.e., m−1 ∑mi = 1 Eα(Si ∣ Li; γ0α, ρ1) − α = 0 where Eα(Si ∣ Li; γ0α, ρ1) = g−1(γ0α + ρT1 Li).
+T
+
+Let P α(S = s ∣ L) denote (4) evaluated using (γ 0α, ρT1 ) , and let E(Y ∣ S = s, L = l) denote (6)
+evaluated using β. Then the g-formula estimator of μ(α) is
+μ(α) =
+
+∫ s ∈∑S(n) E(Y ∣ S = s, L = l)P (S = s ∣ L = l)d F (l)
+α
+
+L
+
+l
+
+where F L denotes the empirical distribution function of L. Equivalently, the estimator may be
+written
+μ(α) =
+
+Author Manuscript
+
+m
+1
+∑ E(Y i ∣ Si = s, Li)P α(Si = s ∣ Li) .
+m ∑
+i = 1 s ∈ S(Ni)
+
+The estimator for the effects of interest is δ (α, α′) = μ(α) − μ(α′). The estimators ρ, β, γ 0α,
+μ(α), μ(α′), and δ (α, α′) are solutions to unbiased estimating equations (see Supporting
+
+Information). Therefore, it follows from standard large-sample estimating equation theory
+that the estimators are consistent and asymptotically Normal20. The empirical sandwich
+estimators, which are consistent estimators of the asymptotic variances, can be used to
+construct point-wise Wald confidence intervals (CIs).
+2.4 ∣
+
+Population Strata
+
+Author Manuscript
+
+For the DRC malaria example, the methods described above may be applied directly if
+children are considered the population of interest, and we ignore data collected from adults.
+Such an approach makes inference about counterfactual scenarios regarding the distribution
+of bed net usage in children and is agnostic to bed net use by others in the clusters. However,
+the DRC DHS includes bed net data for all individuals, which can be utilized to estimate
+the effects of bed net usage by all individuals on the risk of malaria in children. To do
+so, the approach above can simply be modified by changing the definition of S to be the
+proportion of all individuals in the cluster, not just children, who use bed nets. Alternatively,
+one may choose to model separately the proportion of children using bed nets (say S1) and
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 9
+
+Author Manuscript
+
+the proportion of other individuals in the cluster using bed nets (say S2). In particular, the
+population mean estimand μ(α) may be expressed
+
+∑ E(Y ∣ S = s , S = s , L = l)P (S = s ∣ L = l, S = s )P (S = s ∣ L = l)d F (l)
+∫s∑
+∈S s ∈S
+1
+
+l
+
+2
+
+2 1
+
+1
+
+2
+
+2
+
+α
+
+1
+
+1
+
+2
+
+2
+
+α
+
+2
+
+2
+
+L
+
+1
+
+where the policy α here is defined such that individuals in strata 1 and 2 are treated with the
+same probability: Eα(S1) = Eα(S2) = Eα(S) = α. More generally, one could consider different
+policies α1 and α2 for the two population strata. Inference proceeds analogous to Sections
+2.2-2.3, but with separate parametric models for S1 given L, S2 and for S2 given L; such an
+approach is taken in the DRC bed net analysis in Section 4.
+
+Author Manuscript
+
+2.5 ∣
+
+G-Null Paradox
+In the absence of interference, the parametric g-formula may give rise to the so-called g-null
+paradox. That is, certain parametric models are guaranteed to be misspecified under the null
+hypothesis of no treatment effect. As a result, the null hypothesis of no treatment effect will
+be incorrectly rejected with high probability when the sample size is large7,21,22.
+For the setting considered in this paper, the null hypothesis is that the proportion treated S
+has no effect on the outcome Y , or that μ(α) = μ(α′) for any two policies α, α′. If S has no
+effect on Y , then β2 = 0 and E(Y ∣ S = s, L) = E(Y ∣ L). Therefore,
+μ(α) =
+
+∫ E(Y ∣ L = l)s ∈∑S(n) P (S = s ∣ L = l)d F (l) = ∫ E(Y ∣ L = l)d F (l)
+α
+
+L
+
+l
+
+L
+
+l
+
+Author Manuscript
+
+(7)
+
+where the second equality follows because ∑s ∈ S(n) P α(S = s ∣ L = l) = 1. The right-hand side
+of (7) does not depend on α, so the g-null paradox does not occur here.
+3∣
+
+EMPIRICAL EVALUATION
+Simulation studies were conducted to evaluate the finite sample properties of the proposed
+g-formula estimator. Three separate simulation studies were conducted for the three target
+estimands: overall effect, effect when treated, and effect when not treated. For the overall
+effect simulation study, 1000 data sets each with m = 125 clusters were stochastically
+generated as follows:
+
+Author Manuscript
+
+i.
+
+The number of individuals per cluster Ni was simulated such that P (Ni = 8) = 0.4,
+P (Ni = 16) = 0.35, and P (Ni = 20) = 0.25.
+
+ii.
+
+Two cluster-level covariates L1i and L2i were generated, where L1i was Normal
+with mean 40 and standard deviation 10, and L2i was such that P (L2i = 0) = 5 ∕ 18,
+P (L2i = 1) = 3 ∕ 18, P (L2i = 2) = 4 ∕ 18, P (L2i = 3) = 5 ∕ 18, P (L2i = 4) = 1 ∕ 18.
+
+iii.
+
+For each cluster, the number of treated individuals was drawn from a
+Binomial distribution with parameters Ni and πi = expit(ρ0 + ρ1L1i + ρ2L2i) where
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 10
+
+Author Manuscript
+
+ρ = (logit(0.6), − 0.01, − 0.01)T. The proportion of individuals treated per cluster,
+
+Si, was then calculated by dividing the number of treated individuals by Ni.
+
+iv.
+
+For each cluster, the outcome Y i was set equal to Xi ∕ Ni where Xi
+was Binomial with parameters Ni and ηi = expit(β0 + β1L1i + β2Si + β3L2i) where
+β = (logit(0.6), − 0.01, − 0.8, − 0.01)T.
+
+Correctly specified models of Y given S and L, and of S given L were fit by maximum
+likelihood. The asymptotic variance of the estimators was estimated using the empirical
+sandwich variance estimator, and point-wise Wald 95% CIs were calculated with these
+variance estimates.
+
+Author Manuscript
+
+The true values of estimands for policies α ∈ {0.4, 0.5, 0.6} were calculated analytically
+for the data generating process described above. In particular, the true values of γ0α
+are the solutions to (5) where πα = expit(γ0α + ρ1L1 + ρ2L2). The counterfactual probabilities
+P α(S = s ∣ L) for s ∈ S(N) can then be computed via (4) based on the true values of γ0α, ρ1,
+
+ρ2. Similarly, E(Y ∣ S = s, L) for s ∈ S(N) may be evaluated using (6) and the true value of β.
+
+Finally, the true values of μ(α) can be found using (1).
+Results for the overall effect simulation study are given in the top third of Table 1. The
+average bias of the proposed g-formula estimators was negligible, and the CIs contained
+the true parameter values for approximately 95% of the simulated datasets. The average of
+the estimated sandwich standard errors was approximately equal to the empirical standard
+errors, with standard error ratios of approximately 1.
+
+Author Manuscript
+
+The simulation study described above was repeated for the effect when treated, with the
+following modification. In step (iv), the cluster outcome Y i was set equal to Xi1 ∕ (NiSi) where
+Xi1 was Binomial with parameters NiSi and ηi. If there were no treated individuals in a cluster,
+then Y i was set to 0. Results for the g-formula estimator of the effect when treated are
+presented in the middle part of Table 1. Results are similar to the overall effect, except the
+standard error for the g-formula estimator of the effect when treated is larger because fewer
+individuals contribute to the outcome.
+Finally, a third simulation study was conducted for the effect when untreated. The simulation
+steps above were repeated, but with step (iv) modified such that the cluster outcome Y i was
+set equal to Xi0 ∕ {Ni(1 − Si)} where Xi0 was Binomial with parameters Ni(1 − Si) and ηi, with
+Y i set to 0 if Si = 1. Results are given in the bottom section of Table 1.
+
+Author Manuscript
+
+Additional simulation studies were conducted to compare the g-formula estimator with
+the IPW estimator of Barkley et al.5 The same data generating process described
+above was repeated, with the exception of steps (iii) and (iv) where instead the
+treatment status for each individual was generated as a Bernoulli random variable
+with expectation πij = expit(ρ0 + ρ1L1i + ρ2L2i) where ρ = (logit(0.6), − 0.01, − 0.01)T, and
+similarly, individual outcomes were generated as Bernoulli random variables with
+mean ηij = expit(β0 + β1L1i + β2Si + β3L2i) where β = (logit(0.6), − 0.01, − 0.8, − 0.01)T. For each
+simulated dataset, the proposed g-formula estimator and the Barkley et al.5 IPW estimator
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 11
+
+Author Manuscript
+
+were computed. Results in the top panel of Table 2 show both estimators are approximately
+unbiased, but the ESE of the IPW estimator is roughly twice as large.
+
+Author Manuscript
+
+Because the IPW estimator is known to not perform well in the presence of large clusters
+(as in the bed net study), the simulation study described in the previous paragraph was
+repeated, but in step (i), the number of individuals per cluster Ni was simulated under
+two additional scenarios: (i) P (Ni = 20) = 0.4, P (Ni = 50) = 0.35, P (Ni = 100) = 0.25, and (ii)
+P (Ni = 40) = 0.4, P (Ni = 100) = 0.35, P (Ni = 200) = 0.25. For these simulations, the bias of
+the IPW estimator increased as the cluster size increased, and the ESE was an order of
+magnitude larger than the g-formula estimator for most estimands; see the middle and
+bottom panels of Table 2. While the IPW estimator is consistent as the number of clusters
+grows large, there are no established theoretical results showing the IPW estimator is
+consistent when the size of the clusters increases while the number of clusters is held fixed.
+Moreover, the IPW estimator entails inverse weighting by cluster propensity scores, which
+tend to decrease as the cluster sizes increase, leading to greater variability and increased bias
+for the simulation setting considered here as shown in Table 2.
+
+4∣
+
+ANALYSIS OF BED NET USE ON MALARIA IN THE DEMOCRATIC
+
+REPUBLIC OF THE CONGO
+
+Author Manuscript
+
+The methods described above were applied to the DRC DHS survey to draw inference about
+the effects of bed nets on malaria in children when varying the proportion of children in
+this age range who use bed nets. As mentioned in Section 1, a single linkage agglomerative
+hierarchical cluster method23 was used to group households of individuals into clusters.
+The maximum distance between any two households in the same cluster was constrained
+to not exceed 10 kilometers. This distance was selected based on the maximum flight
+distance of an Anopheles mosquito24. The GPS coordinates used in the clustering algorithm
+were randomly displaced from the actual location to prevent participant identification. Rural
+clusters were displaced up to 5 kilometers, while urban clusters were displaced up to 2
+kilometers9. Using this clustering algorithm, there were 395 clusters with at least one child
+that were not missing spatial information and other covariates. Figure 2 displays the number
+of children per cluster, as well as the proportion of these children who used bed nets; on
+average, 55% of children utilized bed nets.
+
+Author Manuscript
+
+Because malaria was measured only in children, Y , S, and N for each cluster were defined
+based only on children with a measured outcome. Exchangeability was assumed conditional
+on the cluster-level proportion of women, as well as cluster-level averages of building
+materials (described below), urbanicity, altitude, age, temperature in the month of the survey,
+total precipitation in a 10-kilometer radius the month before the survey, and proportion of
+agricultural land cover within a 10-kilometer radius in 2013. The building material variable
+was defined similarly to Levitz et al.10, where roof and wall materials were summed for each
+individual within a cluster. Natural materials were worth 0 points, rudimentary materials 1
+point, and finished materials 2 points. Hence, for each individual, the building material
+variable was an integer between 0 and 4. The conditional exchangeability assumption
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 12
+
+Author Manuscript
+
+supposes that, within strata of clusters defined by levels of these eight covariates, the
+proportion of children using bed nets is essentially randomized.
+
+Author Manuscript
+
+These covariates were selected based on prior research showing that each covariate
+is predictive of both the exposure and the outcome. Gender has been found to be
+associated with malaria; in particular, pregnant women may attract more malaria-carrying
+mosquitoes and have decreased malaria immunity25,24,26,27,28. Women, and in particular
+pregnant women, have been found to use bed nets more often29,27. Age is associated
+with malaria prevalence in several studies, with children being particularly vulnerable due
+to low malaria immunity30,24,10,26,27,28. Children under five years old, along with older
+adults, tend to be more likely to use bed nets31,29. Housing quality and urbanicity are
+both associated with malaria prevalence, where traditional homes or sleeping outside are
+associated with increased malaria risk24,10,26. Individuals sleeping in temporary housing
+such as tents or those in poor, rural areas may not be able to afford bed nets or housing
+that prevents mosquito entry26,28, while individuals in urban areas may be more inclined
+to use bed nets due to increased exposure to education and health systems27. Altitude,
+temperature, precipitation, and agricultural land cover are all associated with malaria
+prevalence, with more favorable climates for malaria parasites and mosquito larvae leading
+to increased malaria risk24,10,26,28. In areas where the perceived malaria risk is low due to
+unfavorable conditions for mosquitoes or malaria parasites, bed net use may be decreased31.
+Additionally, in warmer temperatures, individuals may choose not to use bed nets if it’s too
+hot when using them or if they sleep outdoors31,28.
+
+Author Manuscript
+
+In addition to conditional exchangeability, WSI was assumed conditional on the same set
+of covariates as the conditional exchangeability assumption. The WSI assumption supposes
+that within the strata of clusters having the same covariate values, the expected cluster-level
+malaria outcome depends only on the proportion of children using bed nets but not on which
+particular children use bed nets.
+Figure 3 displays g-formula estimates and corresponding point-wise 95% confidence
+intervals of the population mean estimands over a range of policies α ∈ [0.1, 0.9] in all
+individuals, when treated, and when untreated. The left panel of Figure 3 shows that the
+overall risk of malaria decreases as α increases, which is not surprising since bed nets are
+known to protect against malaria and bed net usage increases with α. The middle panel of
+Figure 3 demonstrates that the risk of malaria when treated also decreases as α increases. On
+the other hand, there appears to be little or no effect when untreated (right panel of Figure
+3).
+
+Author Manuscript
+
+Estimates and point-wise 95% confidence intervals of the overall effects, effects when
+treated, and effects when untreated for different policies α compared to the current factual
+policy α′ = 0.55 are displayed in Figure 4. These estimates approximate the expected change
+in the number of cases of malaria due to increasing or decreasing bed net use relative
+to current utilization. For example, δ (α = 0.8, α′ = 0.55) = − 0.056 (95% CI −0.076, −0.035)
+indicates that if 80% of children in a cluster were to use bed nets, then we would expect 56
+fewer cases of malaria per 1000 children on average. Similarly, for the effect when treated,
+δ (α = 0.8, α′ = 0.55) = − 0.077 (95% CI −0.10, −0.054), indicating we would expect 77 fewer
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 13
+
+Author Manuscript
+
+cases of malaria per 1000 treated children on average if 80% of children in a cluster were to
+use bed nets. On the other hand, the effect when untreated for α = 0.8 compared to α′ = 0.55
+is −0.011 (95% CI −0.045, 0.023), suggesting no or modest benefit of increasing bed net use
+to non-users.
+For the sake of comparison, the Barkley et al.5 IPW estimator was also applied to the DRC
+DHS data to estimate the bed net effects. However, the mixed effects model used to estimate
+the group propensity scores did not converge, hence it was not possible to compute the IPW
+estimates. Given that the DRC data includes several large clusters, it is not surprising issues
+were encountered when attempting to compute the IPW estimator. See Saul and Hudgens32
+for further discussion related to computational issues of partial interference IPW estimators.
+A possible workaround would be to exclude the large clusters33, but this would inefficiently
+discard data and limit the generalizability of the results.
+
+Author Manuscript
+
+The results above are based on the clustering of households such that the maximum distance
+between any two households in the same cluster was 10 km. Sensitivity analyses were
+performed, where clusters were instead defined based on maximum distances of 5 km and
+2.5 km. There were 415 clusters in the 5 km analysis and 449 clusters in the 2.5 km
+analysis that were not missing spatial information and had at least one child. Population
+mean estimates were very similar between the 2.5 km, 5 km, and 10 km analyses; see Figure
+5.
+
+Author Manuscript
+
+The g-formula approach relies on the correct specification of the outcome model, and
+thus, assessing the robustness of results to model specification is essential when using this
+method in practice. Various sensitivity analyses of the DRC data did not result in meaningful
+changes in the conclusions. For example, the results in Supplementary Figures S1 and S2
+show the population mean estimates were similar to the original estimates when each of
+the eight covariates was individually dropped from the outcome model. The sensitivity of
+the results to the specified outcome regression link function was also assessed. Results
+in Supplementary Figure S3 show that when the probit link function was used instead
+of the logit link function for treatment and outcome models, the estimates were almost
+identical to the original scenario. Finally, an interaction term between S and the average total
+precipitation in a 10 km radius at the month before the survey was included in the outcome
+model, and the estimates did not appreciably change relative to the original estimates from
+the model without the interaction term (Supplementary Figure S3).
+
+Author Manuscript
+
+To investigate the effect of changing the proportion of the entire population who use bed
+nets, the 10-kilometer clusters were also analyzed using the methods from Section 2.4
+with separate parametric models fit for S1 given L, S2 and for S2 given L. The estimated
+population means for the general population policy compared to the children-only policy
+are shown in Figure 6. Changes in the general population policy are associated with greater
+changes in the mean outcome in all individuals and when treated compared to the childrenonly policy. However, the largest difference in estimated population means between the
+general population policy and the children-only policy is only 0.05. For the effect when
+untreated, the estimates are approximately the same for both the children-only and general
+population policies.
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Author Manuscript
+
+5∣
+
+Page 14
+
+DISCUSSION
+In the presence of partial interference, the proposed g-formula estimator is an alternative to
+existing IPW estimators, such as those proposed in Tchetgen Tchetgen and VanderWeele3.
+The g-formula estimator can accommodate large clusters, unlike IPW estimators34,33, and
+does not suffer from the g-null paradox that may occur in the absence of interference. Like
+the IPW estimators of Papadogeorgou et al.4 and Barkley et al.,5 the proposed methods
+target counterfactual estimands, which allow for within-cluster dependence of treatment
+selection and thus may be more relevant to policymakers. While motivated by infectious
+disease prevention studies, the g-formula methods developed in this paper are applicable in
+other settings where partial interference may be present.
+
+Author Manuscript
+
+The approach used in this paper requires only cluster-level covariates, exposures, and
+outcomes, and thus may be of particular utility in settings where individual-level data is
+not available and only cluster-level variables are observed. As noted by one reviewer, the
+approach in this paper accommodates partial interference by essentially reframing as a
+‘classic causal inference’ problem where the clusters as units and i.i.d. unit-level data are
+observed. Moreover, the g-formula estimator could easily be adapted to the no interference
+setting where the exposure is a fraction between 0 and 1.
+
+Author Manuscript
+Author Manuscript
+
+The analysis of the DRC Demographic and Health Survey data in Section 4 provides
+evidence that increasing the proportion of children who use bed nets reduces the proportion
+of children with malaria. The protective effect of bed nets was found to be more pronounced
+in children who use bed nets compared to children who do not. These results complement
+existing research on the population-level effects of bed nets. For example, communitylevel effects of bed net use have previously been found to affect the overall risk of
+malaria among individuals within the community35,36. Additionally, previous studies have
+shown that community-level bed net coverage can have indirect (i.e., spillover) protective
+effects37,38,39,40. Similar to the results in this paper, Escamilla et al.41 found that the
+protective association of community-level bed net coverage with malaria morbidity in
+Malawi was greater among children who used bed nets compared to children who did not.
+Likewise, using the same DRC data as in this paper, Levitz et al.10 found community-level
+bed net use was associated with a lower prevalence of malaria, and in individuals who used
+bed nets, the odds of malaria were further diminished. The DRC data analysis presented
+in Section 4 extends these previous association-type analyses of population-level bed net
+usage to inference about the different causal effects of bed nets. Such inference quantifies
+the expected number of malaria cases prevented for different levels of bed net coverage
+when individuals use bed nets as well as when individuals do not, thus providing a clearer
+interpretation of and additional insight into the population-level impact of bed nets for
+investigators and policymakers.
+There are several possible areas of further methodological research related to this paper. For
+example, the consistency of the proposed g-formula estimator requires that the parametric
+models be correctly specified. These models make explicit assumptions on the clusterlevel data generating process (DGP) without explicitly imposing any assumptions on the
+individual-level DGP. That said, individual-level DGPs that do not marginalize to the
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 15
+
+Author Manuscript
+Author Manuscript
+
+assumed cluster-level DGP are implicitly assumed to not hold. Future research could explore
+relaxing these parametric assumptions, perhaps by using semiparametric or nonparametric
+(i.e., machine learning) methods. In no interference setting, Kennedy12 considers estimands
+similar to the estimands in this paper corresponding to average potential outcomes when the
+proportion treated is increased. Kennedy proposes nonparametric doubly robust estimators,
+which tend to have smaller bias but larger variance than the parametric approach considered
+in this paper. Extensions of the proposed method which relax the partial interference
+assumption and thereby allowing for more general (e.g., spatial) interference42,43 could be
+considered. The method developed here considers only a univariate exposure, such as bed
+net usage in the malaria study, and makes no assumptions about other possible exposures.
+Future research could extend the methods in this paper to draw inference about the joint
+effects of multivariate exposures in the presence of partial interference. In the context of
+malaria, such methods could be used to assess the effects of policies on bed net usage
+and other risk factors for malaria, such as spraying of insecticides or other approaches
+to mosquito control. The RTS,S/AS01 malaria vaccine was recently recommended for
+widespread use by the World Health Organization44, and it would also be of interest to
+assess the joint effect of bed nets and vaccination. As the total number of bed nets may be
+limited in practice, it may be helpful to extend the proposed methods to estimate an optimal
+bed net allocation strategy based on cluster characteristics, subject to some constraints on
+the total number of bed nets available45. Finally, the approach in this paper defines the unit
+as the cluster, which has advantages but does not easily permit inference about the direct
+effect. G-formula based estimates of direct effects could be developed, presumably based on
+individual-level potential outcomes.
+
+Supplementary Material
+Author Manuscript
+
+Refer to Web version on PubMed Central for supplementary material.
+
+ACKNOWLEDGEMENTS
+The authors thank two anonymous reviewers for helpful suggestions. The authors also thank Shaina Alexandria,
+Bryan Blette, M. Elizabeth Halloran, Sam Rosin, Bonnie Shook-Sa, and Jaffer Zaidi for providing comments on the
+manuscript. The authors also thank Mark Janko for providing temperature, precipitation, and agricultural density
+data. This work was partially supported by NIH grants R01 AI085073 and T32 ES007018.
+
+DATA AVAILABILITY STATEMENT
+The DRC survey data is available upon request at http://www.dhsprogram.com, and the
+corresponding spatial data is available at http://spatialdata.dhsprogram.com.
+
+Author Manuscript
+
+References
+1. Cox DR. Planning of Experiments. New York: Wiley. 1958.
+2. Sobel ME. What do randomized studies of housing mobility demonstrate? Causal inference in the
+face of interference. Journal of the American Statistical Association 2006; 101(476): 1398–1407.
+3. Tchetgen Tchetgen EJ, VanderWeele TJ. On causal inference in the presence of interference.
+Statistical Methods in Medical Research 2012; 21(1): 55–75. [PubMed: 21068053]
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 16
+
+Author Manuscript
+Author Manuscript
+Author Manuscript
+Author Manuscript
+
+4. Papadogeorgou G, Mealli F, Zigler CM. Causal inference with interfering units for cluster
+and population level treatment allocation programs. Biometrics 2019; 75(3): 778–787. [PubMed:
+30859545]
+5. Barkley BG, Hudgens MG, Clemens JD, Ali M, Emch ME. Causal inference from observational
+studies with clustered interference, with application to a cholera vaccine study. Annals of Applied
+Statistics 2020; 14(3): 1432–1448.
+6. Park C, Kang H. Efficient semiparametric estimation of network treatment effects under partial
+interference. Biometrika 2022; 109(4): 1015–1031.
+7. Robins J A new approach to causal inference in mortality studies with sustained exposure period
+—application to control of the healthy worker survivor effect. Mathematical Modelling 1986; 7:
+1393–1512.
+8. Hernán MA, Robins JM. Estimating causal effects from epidemiological data. Journal of
+Epidemiology & Community Health 2006; 60(7): 578–586. [PubMed: 16790829]
+9. Ministére du Plan et Suivi de la Mise en oeuvre de la Révolution de la Modernité (MPSMRM),
+Ministére de la Santé Publique (MSP), and ICF International. République Démocratique du Congo
+Enquête Démographique et de Santé (EDS-RDC) 2013-2014 [Dataset]. CDPR61SD, CDGE61FL. ;
+Rockville, Maryland: 2014. Rockville, Maryland, USA: MPSMRM, MSP and ICF International
+[Producers], ICF [Distributer].
+10. Levitz L, Janko M, Mwandagalirwa K, et al. Effect of individual and community-level bed net
+usage on malaria prevalence among under-fives in the Democratic Republic of Congo. Malaria
+Journal 2018; 17(1): 39. [PubMed: 29347953]
+11. Muñoz ID, Van Der Laan M. Population intervention causal effects based on stochastic
+interventions. Biometrics 2012; 68(2): 541–549. [PubMed: 21977966]
+12. Kennedy EH. Nonparametric Causal Effects Based on Incremental Propensity Score Interventions.
+Journal of the American Statistical Association 2019; 114(526): 645–656.
+13. Wen L, Marcus JL, Young JG. Intervention treatment distributions that depend on the observed
+treatment process and model double robustness in causal survival analysis. Statistical Methods in
+Medical Research 2023; 32(3): 509–523. [PubMed: 36597699]
+14. Lee C, Zeng D, Hudgens MG. Efficient Nonparametric Estimation of Stochastic Policy Effects
+with Clustered Interference. Journal of the American Statistical Association 2024: In press.
+15. Rubin DB. Causal inference using potential outcomes: Design, modeling, decisions. Journal of the
+American Statistical Association 2005; 100(469): 322–331.
+16. VanderWeele TJ, Tchetgen Tchetgen EJ. Effect partitioning under interference in two-stage
+randomized vaccine trials. Statistics & Probability Letters 2011; 81(7): 861–869. [PubMed:
+21532912]
+17. Crawford FW, Morozova O, Buchanan AL, Spiegelman D. Interpretation of the individual effect
+under treatment spillover. American Journal of Epidemiology 2019; 188(8): 1407–1409. [PubMed:
+31094425]
+18. Richardson TS, Robins JM. Single world intervention graphs (SWIGs): A unification of the
+counterfactual and graphical approaches to causality. Center for the Statistics and the Social
+Sciences, University of Washington Series. Working Paper 2013; 128(30): 2013.
+19. Hudgens MG, Halloran ME. Toward causal inference with interference. Journal of the American
+Statistical Association 2008; 103(482): 832–842. [PubMed: 19081744]
+20. Stefanski LA, Boos DD. The calculus of M-estimation. The American Statistician 2002; 56(1):
+29–38.
+21. Robins JM, Wasserman L. Estimation of effects of sequential treatments by reparameterizing
+directed acyclic graphs. Proceedings of the Thirteenth Conference on Uncertainty in Artificial
+Intelligence 1997.
+22. Taubman SL, Robins JM, Mittleman MA, Hernán MA. Intervening on risk factors for coronary
+heart disease: an application of the parametric g-formula. International Journal of Epidemiology
+2009; 38(6): 1599–1611. [PubMed: 19389875]
+23. Everitt BS, Landau S, Leese M, Stahl D. Cluster Analysis. John Wiley. Fifth ed. 2011.
+24. Janko MM, Irish SR, Reich BJ, et al. The links between agriculture, Anopheles mosquitoes,
+and malaria risk in children younger than 5 years in the Democratic Republic of the Congo: a
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 17
+
+Author Manuscript
+Author Manuscript
+Author Manuscript
+Author Manuscript
+
+population-based, cross-sectional, spatial study. The Lancet Planetary Health 2018; 2(2): e74–e82.
+[PubMed: 29457150]
+25. Lindsay S, Ansell J, Selman C, Cox V, Hamilton K, Walraven G. Effect of pregnancy on exposure
+to malaria mosquitoes. The Lancet 2000; 355(9219): 1972.
+26. Smith J, Mumbengegwi D, Haindongo E, et al. Malaria risk factors in northern Namibia: the
+importance of occupation, age and mobility in characterizing high-risk populations. PLOS ONE
+2021; 16(6): 1–23.
+27. Kuse K, Chikako T, Bacha R, Hagan J Jr, Seidu AA, Ahinkorah B. Multilevel modelling of
+individual, community and regional level factors associated with insecticide-treated net usage
+among pregnant women in Ethiopia. Healthcare 2022; 10(8).
+28. CDC: Center for Disease Control and Prevention. Parasites-Malaria https://www.cdc.gov/parasites/
+malaria/index.html; 2023.
+29. Olapeju B, Choiriyyah I, Lynch M, et al. Age and gender trends in insecticide-treated net use
+in sub-Saharan Africa: a multi-country analysis. Malaria Journal 2018; 17(423): 1–12. [PubMed:
+29291736]
+30. Carneiro I, Roca-Feltrer A, Griffin J, et al. Age-patterns of malaria vary with severity, transmission
+intensity and seasonality in sub-Saharan Africa: a systematic review and pooled analysis. PLOS
+ONE 2010; 5(2): 1–10.
+31. Xu JW, Liao YM, Liu H, Nie RH, Havumaki J. Use of bed nets and factors that influence bed net
+use among Jinuo ethnic minority in southern China. PLOS ONE 2014; 9(7): e103780. [PubMed:
+25080267]
+32. Saul BC, Hudgens MG. A recipe for inferference: Start with causal inference. Add interference.
+Mix well with R. Journal of Statistical Software 2017; 82(2).
+33. Chakladar S, Hudgens MG, Halloran ME, Clemens JD, Ali M, Emch ME. Inverse probability
+weighted estimators of vaccine effects accommodating partial interference and censoring.
+Biometrics 2022; 78: 777–788. [PubMed: 33768557]
+34. Liu L, Hudgens MG, Saul B, Clemens JD, Ali M, Emch ME. Doubly robust estimation in
+observational studies with partial interference. Stat 2019; 8(1): e214. [PubMed: 31440374]
+35. Binka FN, Kubaje A, Adjuik M, et al. Impact of permethrin impregnated bednets on child
+mortality in Kassena-Nankana district, Ghana: a randomized controlled trial. Tropical Medicine &
+International Health 1996; 1(2): 147–154. [PubMed: 8665378]
+36. Hii JLK, Smith T, Vounatsou P, et al. Area effects of bednet use in a malaria-endemic area in Papua
+New Guinea. Transactions of the Royal Society of Tropical Medicine and Hygiene 2001; 95(1):
+7–13. [PubMed: 11280071]
+37. Binka FN, Indome F, Smith T. Impact of spatial distribution of permethrin-impregnated bed nets on
+child mortality in rural northern Ghana.. The American Journal of Tropical Medicine and Hygiene
+1998; 59(1): 80–85. [PubMed: 9684633]
+38. Howard SC, Omumbo J, Nevill C, Some ES, Donnelly CA, Snow RW. Evidence for a mass
+community effect of insecticide-treated bednets on the incidence of malaria on the Kenyan coast.
+Transactions of the Royal Society of Tropical Medicine and Hygiene 2000; 94(4): 357–360.
+[PubMed: 11127232]
+39. Maxwell CA, Msuya E, Sudi M, Njunwa KJ, Carneiro IA, Curtis CF. Effect of community-wide
+use of insecticide-treated nets for 3–4 years on malarial morbidity in Tanzania. Tropical Medicine
+and International Health 2002; 7(12): 1003–1008. [PubMed: 12460390]
+40. Hawley WA, Phillips-Howard PA, Ter Kuile FO, et al. Community-wide effects of permethrintreated bed nets on child mortality and malaria morbidity in western Kenya. The American Journal
+of Tropical Medicine and Hygiene 2003; 68(4_suppl): 121–127. [PubMed: 12749495]
+41. Escamilla V, Alker A, Dandalo L, et al. Effects of community-level bed net coverage on malaria
+morbidity in Lilongwe, Malawi. Malaria Journal 2017; 16(142): 1–9. [PubMed: 28049519]
+42. Wang Y, Samii C, Chang H, Aronow P. Design-based inference for spatial experiments with
+interference. arXiv preprint arXiv:2010.13599 2020.
+43. Leung MP. Rate-optimal cluster-randomized designs for spatial interference. The Annals of
+Statistics 2022; 50(5): 3064–3087.
+
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 18
+
+Author Manuscript
+
+44. Maxmen A Scientists hail historic malaria vaccine approval-but point to challenges ahead. Nature
+2021. DOI: 10.1038/d41586-021-02755-5.
+45. Ananth A Optimal treatment assignment rules on networked populations. tech. rep, Cornell
+University;: 2020.
+
+Author Manuscript
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 19
+
+Author Manuscript
+Figure 1.
+
+Author Manuscript
+
+Malaria bed net study in the Democratic Republic of the Congo. Left map: province-level
+bed net usage. Right map: prevalence of malaria in children who do not use bed nets.
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 20
+
+Author Manuscript
+Figure 2.
+
+Author Manuscript
+
+Malaria bed net study in the Democratic Republic of the Congo. Left panel: number of
+children with a measured malaria outcome per cluster. Right panel: proportion of children
+who used bed nets per cluster.
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 21
+
+Author Manuscript
+Author Manuscript
+
+Figure 3.
+
+Estimates of the population mean estimands from the malaria bed net study. The proportion
+of treated children is denoted by policy α. The shaded regions indicate point-wise 95%
+confidence intervals.
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 22
+
+Author Manuscript
+Author Manuscript
+
+Figure 4.
+
+Estimated effects from the malaria bed net study. The proportion of treated children is
+denoted by policy α. Effects contrast α with α′ = 0.55, the current factual policy. The shaded
+regions indicate point-wise 95% confidence intervals.
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 23
+
+Author Manuscript
+Author Manuscript
+
+Figure 5.
+
+Estimates of the population mean estimands from the malaria bed net study. The proportion
+of treated children is denoted by policy α. Solid black lines represent 10 km, solid gray lines
+represent 5 km, and dashed lines represent 2.5 km clusters.
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 24
+
+Author Manuscript
+Author Manuscript
+
+Figure 6.
+
+Estimates of the population mean estimands from the malaria bed net study for the childrenonly policy (solid lines) and general population policy (dashed lines).
+
+Author Manuscript
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 25
+
+Table 1
+
+Author Manuscript
+
+Summary of simulation study results as described in Section 3. Truth: true value of the estimand targeted by
+the estimator. Bias: average bias of the g-formula estimates over 1000 datasets. Cov%: empirical coverage of
+Wald 95% CIs. ASE: average of estimated sandwich standard errors. ESE: empirical standard error. SER:
+ASE/ESE.
+Estimand
+
+Truth
+
+Bias
+
+Cov%
+
+ASE
+
+ESE
+
+SER
+
+All Individuals
+
+Author Manuscript
+
+μ(α = 0.4)
+
+0.418
+
+0.000
+
+94%
+
+0.0147
+
+0.0153
+
+0.96
+
+μ(α = 0.5)
+
+0.399
+
+−0.000
+
+94%
+
+0.0119
+
+0.0121
+
+0.98
+
+μ(α = 0.6)
+
+0.380
+
+−0.000
+
+94%
+
+0.0145
+
+0.0149
+
+0.97
+
+δ(α = 0.6, α′ = 0.4)
+
+−0.038
+
+−0.001
+
+94%
+
+0.0172
+
+0.0180
+
+0.95
+
+δ(α = 0.6, α′ = 0.5)
+
+−0.019
+
+−0.000
+
+94%
+
+0.0084
+
+0.0089
+
+0.95
+
+δ(α = 0.5, α′ = 0.4)
+
+−0.019
+
+−0.000
+
+94%
+
+0.0087
+
+0.0091
+
+0.96
+
+μ1(α = 0.4)
+
+0.418
+
+−0.002
+
+95%
+
+0.0243
+
+0.0242
+
+1.00
+
+μ1(α = 0.5)
+
+0.399
+
+−0.001
+
+96%
+
+0.0174
+
+0.0165
+
+1.05
+
+μ1(α = 0.6)
+
+0.380
+
+0.000
+
+95%
+
+0.0184
+
+0.0178
+
+1.03
+
+δ1(α = 0.6, α′ = 0.4)
+
+−0.038
+
+0.002
+
+93%
+
+0.0255
+
+0.0267
+
+0.96
+
+δ1(α = 0.6, α′ = 0.5)
+
+−0.019
+
+0.001
+
+93%
+
+0.0126
+
+0.0132
+
+0.96
+
+δ1(α = 0.5, α′ = 0.4)
+
+−0.019
+
+0.001
+
+93%
+
+0.0129
+
+0.0135
+
+0.96
+
+When Treated
+
+When Untreated
+
+Author Manuscript
+
+μ0(α = 0.4)
+
+0.418
+
+−0.001
+
+95%
+
+0.0185
+
+0.0188
+
+0.99
+
+μ0(α = 0.5)
+
+0.399
+
+−0.000
+
+96%
+
+0.0173
+
+0.0167
+
+1.03
+
+μ0(α = 0.6)
+
+0.380
+
+0.000
+
+96%
+
+0.0235
+
+0.0231
+
+1.02
+
+δ0(α = 0.6, α′ = 0.4)
+
+−0.038
+
+0.001
+
+94%
+
+0.0248
+
+0.0259
+
+0.96
+
+δ0(α = 0.6, α′ = 0.5)
+
+−0.019
+
+0.000
+
+94%
+
+0.0122
+
+0.0127
+
+0.96
+
+δ0(α = 0.5, α′ = 0.4)
+
+−0.019
+
+0.000
+
+94%
+
+0.0126
+
+0.0131
+
+0.96
+
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+Kilpatrick et al.
+
+Page 26
+
+Table 2
+
+Author Manuscript
+
+Summary of simulation study results comparing g-formula and IPW as described in Section 3. Truth: true
+value of the estimand targeted by the estimator. Bias: average bias of the g-formula and IPW estimates over
+1000 datasets. ESE: empirical standard error. Results are for all individuals (overall effect).
+Estimand
+
+Truth
+
+G-Formula Bias
+
+G-Formula ESE
+
+IPW Bias
+
+IPW ESE
+
+125 clusters of sizes 8, 16, 20
+
+μ(α = 0.4)
+
+0.418
+
+−0.000
+
+0.015
+
+−0.003
+
+0.035
+
+μ(α = 0.5)
+
+0.399
+
+0.000
+
+0.012
+
+−0.001
+
+0.014
+
+μ(α = 0.6)
+
+0.380
+
+0.000
+
+0.014
+
+−0.003
+
+0.024
+
+δ(α = 0.6, α′ = 0.4)
+
+−0.038
+
+0.001
+
+0.017
+
+0.000
+
+0.037
+
+δ(α = 0.6, α′ = 0.5)
+
+−0.019
+
+0.000
+
+0.009
+
+−0.003
+
+0.020
+
+δ(α = 0.5, α′ = 0.4)
+
+−0.019
+
+0.000
+
+0.009
+
+0.003
+
+0.029
+
+Author Manuscript
+
+125 clusters of sizes 20, 50, 100
+
+μ(α = 0.4)
+
+0.418
+
+−0.000
+
+0.011
+
+−0.006
+
+0.247
+
+μ(α = 0.5)
+
+0.399
+
+−0.000
+
+0.007
+
+−0.002
+
+0.016
+
+μ(α = 0.6)
+
+0.380
+
+0.000
+
+0.011
+
+−0.008
+
+0.266
+
+δ(α = 0.6, α′ = 0.4)
+
+−0.038
+
+0.000
+
+0.018
+
+−0.002
+
+0.362
+
+δ(α = 0.6, α′ = 0.5)
+
+−0.019
+
+0.000
+
+0.009
+
+−0.006
+
+0.262
+
+δ(α = 0.5, α′ = 0.4)
+
+−0.019
+
+0.000
+
+0.009
+
+0.004
+
+0.240
+
+125 clusters of sizes 40, 100, 200
+
+Author Manuscript
+
+μ(α = 0.4)
+
+0.418
+
+0.000
+
+0.010
+
+−0.032
+
+0.299
+
+μ(α = 0.5)
+
+0.399
+
+0.000
+
+0.005
+
+−0.005
+
+0.021
+
+μ(α = 0.6)
+
+0.380
+
+−0.000
+
+0.010
+
+−0.047
+
+0.172
+
+δ(α = 0.6, α′ = 0.4)
+
+−0.038
+
+−0.001
+
+0.018
+
+−0.015
+
+0.339
+
+δ(α = 0.6, α′ = 0.5)
+
+−0.019
+
+−0.000
+
+0.009
+
+−0.042
+
+0.166
+
+δ(α = 0.5, α′ = 0.4)
+
+−0.019
+
+−0.000
+
+0.009
+
+0.027
+
+0.291
+
+Author Manuscript
+Stat Med. Author manuscript; available in PMC 2025 July 10.
+
+

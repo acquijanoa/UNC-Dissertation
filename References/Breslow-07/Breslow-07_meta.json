@@ -1,0 +1,1105 @@
+{
+  "table_of_contents": [
+    {
+      "title": "Weighted Likelihood for Semiparametric\nModels and Two-phase Stratified\nSamples, with Application to Cox\nRegression",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          75.899658203125,
+          83.1175537109375
+        ],
+        [
+          423.9013671875,
+          83.1175537109375
+        ],
+        [
+          423.9013671875,
+          156.26611328125
+        ],
+        [
+          75.899658203125,
+          156.26611328125
+        ]
+      ]
+    },
+    {
+      "title": "1. Introduction",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          75.8404541015625,
+          413.4150390625
+        ],
+        [
+          134.27490234375,
+          413.4150390625
+        ],
+        [
+          134.27490234375,
+          424.16400146484375
+        ],
+        [
+          75.8404541015625,
+          424.16400146484375
+        ]
+      ]
+    },
+    {
+      "title": "2. Notation, assumptions and problem statement",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          76.0772705078125,
+          306.56787109375
+        ],
+        [
+          260.5265808105469,
+          306.56787109375
+        ],
+        [
+          260.5265808105469,
+          316.3875732421875
+        ],
+        [
+          76.0772705078125,
+          316.3875732421875
+        ]
+      ]
+    },
+    {
+      "title": "3. Weighted likelihood estimator",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          74.7747802734375,
+          73.872802734375
+        ],
+        [
+          200.19171142578125,
+          73.872802734375
+        ],
+        [
+          200.19171142578125,
+          83.0101318359375
+        ],
+        [
+          74.7747802734375,
+          83.0101318359375
+        ]
+      ]
+    },
+    {
+      "title": "4. Weak convergence of the IPW empirical process under finite population stratified sampling",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          76.373291015625,
+          558.8191833496094
+        ],
+        [
+          433.3740234375,
+          558.8191833496094
+        ],
+        [
+          433.3740234375,
+          567.7855834960938
+        ],
+        [
+          76.373291015625,
+          567.7855834960938
+        ]
+      ]
+    },
+    {
+      "title": "5. Asymptotic distributions of the WL estimator",
+      "heading_level": null,
+      "page_id": 5,
+      "polygon": [
+        [
+          75.8404541015625,
+          210.626953125
+        ],
+        [
+          261.4453125,
+          210.626953125
+        ],
+        [
+          261.4453125,
+          220.21475219726562
+        ],
+        [
+          75.8404541015625,
+          220.21475219726562
+        ]
+      ]
+    },
+    {
+      "title": "6. Bernoulli sampling with estimated weights",
+      "heading_level": null,
+      "page_id": 6,
+      "polygon": [
+        [
+          43.0413818359375,
+          367.6524963378906
+        ],
+        [
+          214.14279174804688,
+          367.6524963378906
+        ],
+        [
+          214.14279174804688,
+          376.618896484375
+        ],
+        [
+          43.0413818359375,
+          376.618896484375
+        ]
+      ]
+    },
+    {
+      "title": "7. Application to the Cox proportional hazards model",
+      "heading_level": null,
+      "page_id": 8,
+      "polygon": [
+        [
+          43.3966064453125,
+          106.3359375
+        ],
+        [
+          248.43002319335938,
+          106.3359375
+        ],
+        [
+          248.43002319335938,
+          116.2996826171875
+        ],
+        [
+          43.3966064453125,
+          116.2996826171875
+        ]
+      ]
+    },
+    {
+      "title": "8. Discussion",
+      "heading_level": null,
+      "page_id": 9,
+      "polygon": [
+        [
+          75.662841796875,
+          450.2236328125
+        ],
+        [
+          127.525634765625,
+          450.2236328125
+        ],
+        [
+          127.525634765625,
+          459.72886657714844
+        ],
+        [
+          75.662841796875,
+          459.72886657714844
+        ]
+      ]
+    },
+    {
+      "title": "Acknowledgements",
+      "heading_level": null,
+      "page_id": 12,
+      "polygon": [
+        [
+          43.81103515625,
+          222.21484375
+        ],
+        [
+          115.56640625,
+          222.21484375
+        ],
+        [
+          115.56640625,
+          231.4765625
+        ],
+        [
+          43.81103515625,
+          231.4765625
+        ]
+      ]
+    },
+    {
+      "title": "References",
+      "heading_level": null,
+      "page_id": 12,
+      "polygon": [
+        [
+          43.84063720703125,
+          292.93505859375
+        ],
+        [
+          84.7802734375,
+          292.93505859375
+        ],
+        [
+          84.7802734375,
+          302.0116271972656
+        ],
+        [
+          43.84063720703125,
+          302.0116271972656
+        ]
+      ]
+    },
+    {
+      "title": "Appendix",
+      "heading_level": null,
+      "page_id": 13,
+      "polygon": [
+        [
+          75.899658203125,
+          475.6762237548828
+        ],
+        [
+          112.48779296875,
+          475.6762237548828
+        ],
+        [
+          112.48779296875,
+          484.64648437499994
+        ],
+        [
+          75.899658203125,
+          484.64648437499994
+        ]
+      ]
+    },
+    {
+      "title": "Appendix A: a representation of stratified sampling",
+      "heading_level": null,
+      "page_id": 13,
+      "polygon": [
+        [
+          75.899658203125,
+          581.3488159179688
+        ],
+        [
+          271.3916015625,
+          581.3488159179688
+        ],
+        [
+          271.3916015625,
+          590.6416015625
+        ],
+        [
+          75.899658203125,
+          590.6416015625
+        ]
+      ]
+    },
+    {
+      "title": "Proposition A.1",
+      "heading_level": null,
+      "page_id": 14,
+      "polygon": [
+        [
+          43.54461669921875,
+          250.33251953124997
+        ],
+        [
+          103.57835388183594,
+          250.33251953124997
+        ],
+        [
+          103.57835388183594,
+          260.3443298339844
+        ],
+        [
+          43.54461669921875,
+          260.3443298339844
+        ]
+      ]
+    },
+    {
+      "title": "Appendix B: proof of weak convergence of the stratum-specific empirical process",
+      "heading_level": null,
+      "page_id": 15,
+      "polygon": [
+        [
+          75.78125,
+          142.462890625
+        ],
+        [
+          382.5070495605469,
+          142.462890625
+        ],
+        [
+          382.5070495605469,
+          152.417236328125
+        ],
+        [
+          75.78125,
+          152.417236328125
+        ]
+      ]
+    },
+    {
+      "title": "Proposition B.1",
+      "heading_level": null,
+      "page_id": 15,
+      "polygon": [
+        [
+          75.54443359375,
+          189.1552734375
+        ],
+        [
+          135.29302978515625,
+          189.1552734375
+        ],
+        [
+          135.29302978515625,
+          200.147705078125
+        ],
+        [
+          75.54443359375,
+          200.147705078125
+        ]
+      ]
+    },
+    {
+      "title": "Appendix C: proof of equation (26)",
+      "heading_level": null,
+      "page_id": 16,
+      "polygon": [
+        [
+          43.7518310546875,
+          187.96240234375
+        ],
+        [
+          178.4044952392578,
+          187.96240234375
+        ],
+        [
+          178.4044952392578,
+          196.93795776367188
+        ],
+        [
+          43.7518310546875,
+          196.93795776367188
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          98
+        ],
+        [
+          "Line",
+          45
+        ],
+        [
+          "Text",
+          8
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          524
+        ],
+        [
+          "Line",
+          98
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "Equation",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          489
+        ],
+        [
+          "Line",
+          56
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "TextInlineMath",
+          3
+        ],
+        [
+          "Equation",
+          2
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          472
+        ],
+        [
+          "Line",
+          94
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "Equation",
+          4
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          655
+        ],
+        [
+          "Line",
+          133
+        ],
+        [
+          "Equation",
+          7
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "TextInlineMath",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          534
+        ],
+        [
+          "Line",
+          141
+        ],
+        [
+          "Text",
+          10
+        ],
+        [
+          "Equation",
+          8
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "TextInlineMath",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "ListItem",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 6,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          673
+        ],
+        [
+          "Line",
+          158
+        ],
+        [
+          "Equation",
+          7
+        ],
+        [
+          "TextInlineMath",
+          7
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 7,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          782
+        ],
+        [
+          "Line",
+          205
+        ],
+        [
+          "TextInlineMath",
+          6
+        ],
+        [
+          "Equation",
+          6
+        ],
+        [
+          "ListItem",
+          4
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 8,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          749
+        ],
+        [
+          "Line",
+          122
+        ],
+        [
+          "Equation",
+          6
+        ],
+        [
+          "TextInlineMath",
+          4
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 9,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          555
+        ],
+        [
+          "Line",
+          132
+        ],
+        [
+          "Equation",
+          5
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 10,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          520
+        ],
+        [
+          "Line",
+          96
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Equation",
+          3
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 11,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          155
+        ],
+        [
+          "Line",
+          53
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 12,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          206
+        ],
+        [
+          "Line",
+          54
+        ],
+        [
+          "ListItem",
+          20
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 13,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          339
+        ],
+        [
+          "Line",
+          60
+        ],
+        [
+          "ListItem",
+          16
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "PageHeader",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          2
+        ],
+        [
+          "TextInlineMath",
+          1
+        ],
+        [
+          "ListGroup",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 14,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          907
+        ],
+        [
+          "Line",
+          125
+        ],
+        [
+          "TextInlineMath",
+          9
+        ],
+        [
+          "Equation",
+          6
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Text",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 15,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          757
+        ],
+        [
+          "Line",
+          71
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "Text",
+          5
+        ],
+        [
+          "Equation",
+          5
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    },
+    {
+      "page_id": 16,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          835
+        ],
+        [
+          "Line",
+          166
+        ],
+        [
+          "TextInlineMath",
+          5
+        ],
+        [
+          "PageHeader",
+          3
+        ],
+        [
+          "Equation",
+          3
+        ],
+        [
+          "SectionHeader",
+          1
+        ],
+        [
+          "Text",
+          1
+        ],
+        [
+          "PageFooter",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 0,
+        "llm_error_count": 0,
+        "llm_tokens_used": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/Breslow-07"
+}

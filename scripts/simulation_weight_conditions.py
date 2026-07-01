@@ -264,7 +264,6 @@ def main():
 
 
     rng        = default_rng(args.seed)
-    sample_dir = ROOT / "data" / "samples"
     pop_path   = ROOT / "data" / "population.csv"
     conditions = ["A", "B", "C"]
 
@@ -274,6 +273,43 @@ def main():
     pop = pd.read_csv(pop_path)
     print(f"  N = {len(pop):,} rows loaded in {time.time()-t0:.1f}s\n", flush=True)
 
+    # ── SLURM Single Sample Array Mode ────────────────────────────────────────
+    if args.single_sample is not None:
+        if args.out_file is None:
+            raise ValueError("Must specify --out_file when using --single_sample")
+        
+        sample_path = Path(args.single_sample)
+        print(f"Running single sample: {sample_path.name}")
+        df_train = pd.read_csv(sample_path)
+        
+        # Fast test set (vectorized key matching)
+        df_test = build_test_set(pop, df_train, N_TEST, default_rng(int(rng.integers(1_000_000))))
+        X_test  = df_test[FEATURE_COLS].values.astype(float)
+        y_test  = df_test[TARGET_COL].values.astype(float)
+        
+        results = []
+        for cond in conditions:
+            res = run_one_condition(
+                df_train=df_train,
+                X_test=X_test,
+                y_test=y_test,
+                condition=cond,
+                n_mcmc=args.n_mcmc,
+                burn_in=args.burn_in,
+                n_trees=args.n_trees,
+                rng=default_rng(int(rng.integers(1_000_000_000))),
+            )
+            res["rep"] = int(args.seed)  # use seed as rep identifier
+            results.append(res)
+            print(f"  Cond {cond} | PP-Cov={100*res['pp_coverage']:.1f}% | f-SD={res['mcmc_sd_f']:.3f} | RMSE={res['rmse']:.4f}")
+            
+        df_res = pd.DataFrame(results)
+        df_res.to_csv(args.out_file, index=False)
+        print(f"Results saved to: {args.out_file}")
+        return
+
+    # ── Local Loop Mode ───────────────────────────────────────────────────────
+    sample_dir = ROOT / "data" / "samples"
     sample_files = sorted(sample_dir.glob("sample_*.csv"))[:args.n_samples]
     print(f"Simulation: {len(sample_files)} replications × {len(conditions)} conditions")
     print(f"MCMC: {args.n_mcmc} iters | burn-in: {args.burn_in} | trees: {args.n_trees}\n",

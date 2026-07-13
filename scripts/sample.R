@@ -55,6 +55,15 @@ sample_dt[, weight := w1 * w2]
 # Compute normalized weights that sum to the final sample size (number of individuals)
 sample_dt[, weight_norm := weight * (nrow(sample_dt) / sum(weight))]
 
+# Keep only columns needed for fitting / Kim-Rao (drop DGP truth & intermediates)
+sample_dt <- sample_dt[, .(
+  strata, psuid, subid,
+  weight, weight_norm,
+  x_inv, x_cont_2, x_bin, x_cat,
+  x_f1, x_f2, x_f3, x_f4, x_f5,
+  y, y_f
+)]
+
 # Create output folder and save sample
 output_dir <- "data/samples"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)

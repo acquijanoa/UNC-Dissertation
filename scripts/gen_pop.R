@@ -85,10 +85,20 @@ dt[, x_cat := sample.int(4L,
   prob = c(0.30, 0.30, 0.20, 0.20)
 )]
 
+# Friedman #1 inputs (independent of the survey DGP covariates)
+# Classic MARS benchmark: x_fk ~ Uniform(0, 1), k = 1,...,5
+dt[, `:=`(
+  x_f1 = runif(.N),
+  x_f2 = runif(.N),
+  x_f3 = runif(.N),
+  x_f4 = runif(.N),
+  x_f5 = runif(.N)
+)]
+
 # Generate residual
 dt[, eps := rnorm(.N)]
 
-# Generate outcome
+# Generate outcome (informative PPS / latent-class DGP)
 dt[, y := cp$alpha[class] +
   cp$beta1[class] * x_inv +
   coef_pop$delta_cont2 * x_cont_2 +
@@ -100,6 +110,19 @@ dt[, y := cp$alpha[class] +
   2.0 * lambda_h +
   u_ij + eps]
 
+# Friedman #1 at the population level (Friedman, 1991), plus the same
+# stratum/cluster effects as y (informative PPS linkage):
+#   mu_f = 10 sin(π x1 x2) + 20 (x3 - 0.5)^2 + 10 x4 + 5 x5
+#          + 2 λ_h + 2 η_i
+dt[, mu_f := 10 * sin(pi * x_f1 * x_f2) +
+  20 * (x_f3 - 0.5)^2 +
+  10 * x_f4 +
+  5 * x_f5 +
+  2.0 * lambda_h +
+  2.0 * eta_i]
+dt[, eps_f := rnorm(.N)]
+dt[, y_f := mu_f + eps_f]
+
 # Final key and column order
 setkey(dt, strata, psuid, subid)
 
@@ -108,12 +131,14 @@ setcolorder(dt, c(
   "strata", "psuid", "subid",
   # --- design effects (informative PPS) ---
   "lambda_h", "eta_i", "M_hi", "N_h",
-  # --- covariates ---
+  # --- covariates (survey DGP) ---
   "x_inv", "x_cont_2", "x_bin", "x_cat",
+  # --- covariates (Friedman #1) ---
+  "x_f1", "x_f2", "x_f3", "x_f4", "x_f5",
   # --- latent class and random effects (truth) ---
-  "class", "u_ij", "eps",
-  # --- outcome ---
-  "y"
+  "class", "u_ij", "eps", "eps_f",
+  # --- outcomes ---
+  "y", "mu_f", "y_f"
 ))
 
 
@@ -141,17 +166,23 @@ message(
 #   M_hi     : cluster size (PPS selection prob: p_hi = M_hi / N_h)
 #   N_h      : stratum total individuals (PPS weight denominator)
 #
-# COVARIATES
+# COVARIATES (survey DGP)
 #   x_inv    : Uniform(0, 20)        — continuous
 #   x_cont_2 : N(0, 1)              — continuous
 #   x_bin    : Bernoulli(plogis(-0.3 + 0.4*x_cont_2))  — binary
 #   x_cat    : Categorical {1,2,3,4} probs (0.30, 0.30, 0.20, 0.20)
 #
+# COVARIATES (Friedman #1 — independent U(0,1) inputs)
+#   x_f1..x_f5 : Uniform(0, 1)
+#
 # LATENT / RANDOM EFFECTS (truth — do not pass to analysis models)
 #   class    : ground-truth latent class z_i ∈ {1, 2, 3}
 #   u_ij     : N(0, sigma_u[k]^2) class-specific individual random intercept
-#   eps      : N(0, 1) residual
+#   eps      : N(0, 1) residual for y
+#   eps_f    : N(0, 1) residual for y_f
 #
-# OUTCOME
-#   y        : complete, generated from full covariate vectors
+# OUTCOMES
+#   y        : informative PPS / latent-class DGP outcome
+#   mu_f     : Friedman #1 mean + 2*lambda_h + 2*eta_i (no noise; for scoring)
+#   y_f      : mu_f + eps_f  (observed Friedman outcome)
 #

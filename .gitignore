@@ -43,3 +43,11 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Archived Python prototypes (kept locally, not in repo)
+scripts/archive/
+
+# Local scratch / cluster junk
+.agents/
+*.Rout
+slurm-*.out

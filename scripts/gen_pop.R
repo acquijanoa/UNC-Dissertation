@@ -110,10 +110,10 @@ dt[, y := cp$alpha[class] +
   2.0 * lambda_h +
   u_ij + eps]
 
-# Friedman #1 at the population level (Friedman, 1991), plus the same
-# stratum/cluster effects as y (informative PPS linkage):
-#   mu_f = 10 sin(π x1 x2) + 20 (x3 - 0.5)^2 + 10 x4 + 5 x5
-#          + 2 λ_h + 2 η_i
+# Friedman #1 with informative PPS linkage: outcome level correlated with
+# cluster/stratum size (same channels that drive selection), so design weights
+# matter for recovering the population mean surface.
+#   mu_f = Friedman(x_f) + 2 λ_h + 2 η_i
 dt[, mu_f := 10 * sin(pi * x_f1 * x_f2) +
   20 * (x_f3 - 0.5)^2 +
   10 * x_f4 +
@@ -183,6 +183,6 @@ message(
 #
 # OUTCOMES
 #   y        : informative PPS / latent-class DGP outcome
-#   mu_f     : Friedman #1 mean + 2*lambda_h + 2*eta_i (no noise; for scoring)
+#   mu_f     : Friedman #1 + 2*lambda_h + 2*eta_i (informative for design)
 #   y_f      : mu_f + eps_f  (observed Friedman outcome)
 #

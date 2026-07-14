@@ -1,5 +1,6 @@
 # test_compile.R
-source("survey_bart_rcpp.R")
+# Run from project root: Rscript scripts/test_compile.R
+source("scripts/survey_bart_rcpp.R")
 
 cat("Testing dummy fit...\n")
 set.seed(42)

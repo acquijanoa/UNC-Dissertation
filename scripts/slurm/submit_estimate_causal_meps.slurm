@@ -9,10 +9,16 @@
 #SBATCH -p general
 
 # ─── Estimate Causal Effect of USC on MEPS — Longleaf SLURM Submit Script ────
+# Submit from anywhere:
+#   sbatch scripts/slurm/submit_estimate_causal_meps.slurm
 
 set -euo pipefail
 
-# Purge modules and load R
+# SLURM copies the batch script to spool; use the directory where sbatch was run
+PROJ_ROOT="${SLURM_SUBMIT_DIR:-$(pwd)}"
+cd "${PROJ_ROOT}"
+mkdir -p logs
+
 module purge
 module load r/4.5.0
 
@@ -24,11 +30,10 @@ else
     CHAIN_ID=$((SLURM_ARRAY_TASK_ID - 4))
 fi
 
-# Print status info
 echo "=== Starting estimate_causal_meps.R ($OUTCOME, Chain $CHAIN_ID) | $(date) ==="
+echo "Project root: ${PROJ_ROOT}"
 echo "Node: $SLURMD_NODENAME"
 
-# Execute R script
 Rscript scripts/estimate_causal_meps.R \
     --n_mcmc 1000 \
     --burn_in 500 \

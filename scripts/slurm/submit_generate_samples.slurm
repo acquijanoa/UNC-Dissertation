@@ -9,17 +9,22 @@
 #SBATCH --array=1-1000
 
 # ─── Generate Samples — Longleaf SLURM Submit Script ────────────────────────
+# Submit from anywhere:
+#   sbatch scripts/slurm/submit_generate_samples.slurm
 
 set -euo pipefail
 
-# Purge modules and load R
+# SLURM copies the batch script to spool; use the directory where sbatch was run
+PROJ_ROOT="${SLURM_SUBMIT_DIR:-$(pwd)}"
+cd "${PROJ_ROOT}"
+mkdir -p logs data/samples
+
 module purge
 module load r/4.5.0
 
-# Print status info
 echo "=== Starting sample generation task ${SLURM_ARRAY_TASK_ID} | $(date) ==="
+echo "Project root: ${PROJ_ROOT}"
 
-# Execute sample R script with the task ID as sample index
 Rscript scripts/sample.R "${SLURM_ARRAY_TASK_ID}"
 
 echo "=== Done | $(date) ==="

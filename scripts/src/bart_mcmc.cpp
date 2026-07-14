@@ -318,6 +318,43 @@ static void predict_tree_into(const Tree& tree, NumericVector& pred) {
   }
 }
 
+// Root is the unique alive node with parent < 0.
+static int find_root(const Tree& tree) {
+  for (size_t i = 0; i < tree.nodes.size(); ++i) {
+    if (tree.nodes[i].alive && tree.nodes[i].parent < 0)
+      return static_cast<int>(i);
+  }
+  return 0;
+}
+
+// OOS walk: left if x < cuts[v][split_cut]  (same rule as Xbin <= split_cut).
+static double predict_tree_row(
+    const Tree& tree, const NumericMatrix& X, int row,
+    const std::vector<std::vector<double> >& cuts
+) {
+  int nid = find_root(tree);
+  while (true) {
+    const Node& nd = tree.nodes[nid];
+    if (!nd.alive) stop("dead node encountered during prediction");
+    if (nd.is_leaf) return nd.mu;
+    if (nd.split_var < 0 || nd.split_cut < 0 || nd.left < 0 || nd.right < 0)
+      stop("invalid split during prediction");
+    double xv = X(row, nd.split_var);
+    if (xv < cuts[nd.split_var][nd.split_cut]) nid = nd.left;
+    else nid = nd.right;
+  }
+}
+
+static double predict_ensemble_row(
+    const std::vector<Tree>& ensemble, const NumericMatrix& X, int row,
+    const std::vector<std::vector<double> >& cuts
+) {
+  double f = 0.0;
+  for (size_t t = 0; t < ensemble.size(); ++t)
+    f += predict_tree_row(ensemble[t], X, row, cuts);
+  return f;
+}
+
 static void find_nogs(const Tree& tree, std::vector<int>& nogs) {
   nogs.clear();
   for (size_t i = 0; i < tree.nodes.size(); ++i) {
@@ -722,6 +759,7 @@ static bool mh_change(
 //' @param psu PSU id per unit within strata (any integers).
 //' @param K Multiplicative scale for bootstrap weights (1 = raw Kim-Rao).
 //' @param normalize_weights If TRUE, rescale each draw so sum(w*) = n.
+//' @param X_test Optional test covariates (same p as X) for OOS predictions.
 //' @export
 // [[Rcpp::export]]
 List run_bart_mcmc_cpp(
@@ -748,12 +786,24 @@ List run_bart_mcmc_cpp(
     double y_center = 0.0,
     double y_range = 1.0,
     double K = 1.0,
-    bool normalize_weights = false
+    bool normalize_weights = false,
+    Nullable<NumericMatrix> X_test = R_NilValue,
+    bool return_weights = false
 ) {
   int n = X.nrow();
   if (weights.size() != n || strata.size() != n || psu.size() != n)
     stop("weights, strata, and psu must each have length nrow(X)");
   if (K <= 0.0) stop("K must be positive");
+
+  bool has_test = X_test.isNotNull();
+  NumericMatrix X_test_mat;
+  int n_test = 0;
+  if (has_test) {
+    X_test_mat = X_test.get();
+    n_test = X_test_mat.nrow();
+    if (X_test_mat.ncol() != X.ncol())
+      stop("X_test must have the same number of columns as X");
+  }
 
   std::vector<std::vector<double> > cuts;
   IntegerMatrix Xbin;
@@ -768,6 +818,8 @@ List run_bart_mcmc_cpp(
   double sigma2 = sigma2_init;
   int n_keep = std::max(num_iter - burn_in, 0);
   NumericMatrix pred_samples(n_keep, n);
+  NumericMatrix pred_test_samples(n_keep, has_test ? n_test : 0);
+  NumericMatrix weight_samples(return_weights ? n_keep : 0, return_weights ? n : 0);
   NumericVector sigma2_samples(n_keep);
 
   NumericMatrix tree_preds(n, num_trees);
@@ -866,6 +918,15 @@ List run_bart_mcmc_cpp(
       int row = iter - burn_in - 1;
       for (int i = 0; i < n; ++i) pred_samples(row, i) = total_pred[i] * y_range + y_center;
       sigma2_samples[row] = sigma2 * y_range * y_range;
+      if (return_weights) {
+        for (int i = 0; i < n; ++i) weight_samples(row, i) = w_star[i];
+      }
+      if (has_test) {
+        for (int j = 0; j < n_test; ++j) {
+          double f = predict_ensemble_row(ensemble, X_test_mat, j, cuts);
+          pred_test_samples(row, j) = f * y_range + y_center;
+        }
+      }
     }
 
     if (verbose_every > 0 && iter % verbose_every == 0) {
@@ -878,7 +939,7 @@ List run_bart_mcmc_cpp(
       _["prune"] = att_prune ? static_cast<double>(acc_prune) / att_prune : NA_REAL
   );
 
-  return List::create(
+  List out = List::create(
       _["pred_samples"] = pred_samples,
       _["sigma2_samples"] = sigma2_samples,
       _["accept_rates"] = accept_rates,
@@ -887,4 +948,9 @@ List run_bart_mcmc_cpp(
       _["K"] = K,
       _["normalize_weights"] = normalize_weights
   );
+  if (has_test) out["pred_test_samples"] = pred_test_samples;
+  else out["pred_test_samples"] = R_NilValue;
+  if (return_weights) out["weight_samples"] = weight_samples;
+  else out["weight_samples"] = R_NilValue;
+  return out;
 }

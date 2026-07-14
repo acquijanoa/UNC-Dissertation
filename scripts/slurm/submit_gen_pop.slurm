@@ -8,18 +8,22 @@
 #SBATCH -p general
 
 # ─── Generate Population — Longleaf SLURM Submit Script ──────────────────────
+# Submit from anywhere:
+#   sbatch scripts/slurm/submit_gen_pop.slurm
 
 set -euo pipefail
 
-# Purge modules and load R
+# SLURM copies the batch script to spool; use the directory where sbatch was run
+PROJ_ROOT="${SLURM_SUBMIT_DIR:-$(pwd)}"
+cd "${PROJ_ROOT}"
+mkdir -p logs
+
 module purge
 module load r/4.5.0
 
-# Print status info
 echo "=== Starting gen_pop.R | $(date) ==="
+echo "Project root: ${PROJ_ROOT}"
 
-# Execute R script
-# Note: R CMD BATCH generates gen_pop.Rout in the current directory or wherever specified
 Rscript scripts/gen_pop.R
 
 echo "=== Done | $(date) ==="

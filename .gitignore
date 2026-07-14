@@ -34,8 +34,17 @@ data/population.csv
 data/samples/
 data/sim_results/
 data/bart_results/
+data/friedman_results/
+data/friedman_K_grid/
+data/friedman_K_grid_A2/
+data/friedman_results_oob/
+data/friedman_results_sum1/
+data/friedman_results_fixed_leaf/
+data/friedman_ppc_A/
+data/meps*
 data/coverage_results.csv
 data/simulation_weight_conditions.csv
+data/merged_simulation_results.csv
 logs/
 *.log
 *.npz
@@ -44,7 +53,7 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Archived Python prototypes (kept locally, not in repo)
+# Archived prototypes (kept locally, not in repo)
 scripts/archive/
 
 # Local scratch / cluster junk

@@ -1,0 +1,2 @@
+method,K,oob_pp_coverage,oob_unit_coverage,n_oob_pairs,oob_mse,mean_pp_width,sample,out_plot
+A,0.01,0.951575167326811,0.993698235505942,3339423,19.1121517731588,17.3780033304076,data/samples/sample_0001.csv,figures/ppc_method_A_sample0001.png

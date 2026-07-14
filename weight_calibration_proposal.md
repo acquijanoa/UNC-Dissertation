@@ -483,3 +483,111 @@ To empirically validate the one-step variance theory and the proposed $K$-scalin
 
 4. **Dissertation Recommendation.**  
    For population-level health economics studies where $\hat{N}$ is of population scale (e.g., MEPS with $\hat{N} \approx 330$ million and $n \approx 26{,}000$), raw Kim-Rao weights ($K = 1.0$) naturally satisfy the Term 2 collapse condition and are recommended as the default. OOB calibration over a $K$ grid should be retained for small-domain analyses where $n_{\text{sub}}$ and $\hat{N}_{\text{sub}}$ are both small, and the raw population-scale weights may not provide sufficient Term 2 suppression. In those cases, the theory-derived starting value $K^* = \hat{N}/\hat{N}_{\text{sub}}$ (Section 2.6) should anchor the search grid.
+
+---
+
+## 7. Friedman Mean-Surface Recovery under Informative Sampling
+
+Section 6 evaluated **posterior predictive coverage of the observed outcome $y$** under the original latent-class DGP. To stress-test weight scaling for a **regression mean surface** under informative complex sampling, we ran a second Monte Carlo experiment with the Friedman #1 response linked to the design.
+
+### 7.1 Design
+
+* **Population.** Same stratified two-stage PPS finite population ($N = 65{,}360$).
+* **Outcome (informative).**  
+  $$
+  \mu_f(x) = 10\sin(\pi x_1 x_2) + 20(x_3-0.5)^2 + 10 x_4 + 5 x_5 + 2\lambda_h + 2\eta_i,\qquad
+  y_f = \mu_f + \varepsilon,\ \varepsilon\sim N(0,1).
+  $$
+  Design effects $\lambda_h$ (stratum) and $\eta_i$ (PSU) enter both selection and the mean, so ignoring the design biases recovery of the population surface.
+* **Sample.** 1,000 independent survey draws ($n \approx 5{,}500$).
+* **Model covariates.** Friedman features $x_1,\ldots,x_5$ only (design IDs not included as covariates) — a deliberate misspecification relative to $\mu_f$.
+* **Scoring.** Held-out population units not in the sample ($n_{\mathrm{test}}=2{,}000$). Estimands:
+  - $\theta = n_{\mathrm{test}}^{-1}\sum_i \mu_f(x_i)$ with coverage of the posterior for $\bar f$;
+  - pointwise RMSE of $\bar f$ vs $\mu_f$;
+  - posterior predictive coverage of $y_f$ (same metric family as Section 6).
+* **Backend.** C++ Kim–Rao BART (`bart_mcmc.cpp`), 200 trees, 2,000 MCMC iterations, burn-in 500. $\sigma^2$ updates always use $n$-scaled residual weights (as in Section 6).
+
+### 7.2 Weight regimes
+
+**A2 ($M \approx K\cdot n$).** Input weights `weight_norm` (mean 1, $\sum w = n$). Kim–Rao bootstrap is applied and **not** re-normalized each draw, so $K$ multiplies the effective weight sum $M\approx K n$ and therefore scales Term 2 as $n/M \propto 1/K$. Grid: $K\in\{0.01, 0.1, 0.5, 1, 2, 5, 10, 20\}$.
+
+**sum1 ($M = 1$).** Input weights $w_i/\sum_j w_j$ (unit sum), Kim–Rao without per-draw re-normalization, $K=1$. This is the extreme small-$M$ end of Section 4.
+
+*(For reference from an earlier baseline under the same informative DGP: forcing $\sum w^*=n$ each draw with `weight_norm` and $K=1$ gave 86.3% coverage of $\theta$; raw population-scale weights with $K=1$ and Chipman `wbart` without design covariates both severely undercovered $\theta$ — consistent with Term 2 collapse plus mean-surface misspecification.)*
+
+### 7.3 Results — A2 $K$-grid (1,000 replications per $K$)
+
+| $K$ | Bias | Rel. bias | Emp. SE | Est. SE | SE ratio | Cover($\theta$) | RMSE($\mu_f$) | PP cover($y_f$) | Pointwise cover($\mu_f$) |
+|:---:|-----:|----------:|--------:|--------:|---------:|----------------:|--------------:|----------------:|-------------------------:|
+| 0.01 | −0.029 | −0.2% | 0.223 | 0.631 | 2.823 | **100.0%** | 3.251 | 99.2% | 92.2% |
+| **0.1** | −0.056 | −0.3% | 0.225 | 0.253 | **1.125** | **94.9%** | 2.948 | **96.8%** | 68.7% |
+| 0.5 | −0.072 | −0.4% | 0.224 | 0.208 | 0.929 | 87.8% | **2.894** | 95.3% | 49.0% |
+| 1.0 | −0.084 | −0.4% | 0.222 | 0.197 | 0.888 | 86.1% | 2.912 | 94.5% | 44.2% |
+| 2.0 | −0.117 | −0.6% | 0.217 | 0.178 | 0.819 | 81.7% | 2.984 | 93.1% | 45.1% |
+| 5.0 | −0.306 | −1.6% | 0.200 | 0.097 | 0.482 | 30.0% | 3.618 | 77.8% | 53.5% |
+| 10.0 | −0.427 | −2.2% | 0.211 | 0.042 | 0.199 | 4.2% | 5.198 | 42.4% | 39.5% |
+| 20.0 | −0.436 | −2.3% | 0.236 | 0.033 | 0.139 | 3.6% | 5.979 | 29.0% | 27.8% |
+
+*Sources: `data/friedman_K_grid_A2/report_table.csv` (8,000 task files).*
+
+### 7.4 Results — unit-sum weights (sum1, $K=1$)
+
+| Method | Bias | Rel. bias | Emp. SE | Est. SE | SE ratio | Cover($\theta$) | RMSE($\mu_f$) | PP cover($y_f$) |
+|:---:|-----:|----------:|--------:|--------:|---------:|----------------:|--------------:|----------------:|
+| sum1 | +1.237 | +6.4% | 0.897 | 5.899 | **6.576** | **100.0%** | 5.719 | **100.0%** |
+
+*Source: `data/friedman_results_sum1/report_table.csv` (1,000 replications).*
+
+### 7.5 Interpretation relative to Section 6
+
+1. **Term 2 scaling direction is confirmed.** Under A2, larger $K$ shrinks Est. SE, SE ratio, Cover($\theta$), and PP($y_f$) together. This matches Section 4: Term 2 $\propto n/M$ with $M\approx K n$. Inflating $K$ past 1 on the mean-1 weight scale concentrates the posterior and undercovers — the same qualitative message as the OOB grid in Section 6.3 (do not inflate $K$ once Term 2 is already small).
+
+2. **PP of $y$ vs coverage of mean($\mu_f$).** At $K=1$ on `weight_norm`, PP($y_f$)$\approx 94.5\%$ (near the Section 6 Condition A figure of 96.6%), while Cover($\theta$)$=86.1\%$. Interval calibration for the **mean surface** under design-linked misspecification is stricter than predictive coverage of $y$; the two metrics must not be conflated.
+
+3. **$K\approx 0.1$ restores nominal Cover($\theta$).** With $M\approx 0.1 n$, Term 2 is inflated enough that Est. SE $\approx$ Emp. SE (ratio 1.13) and Cover($\theta$)$=94.9\%$, with PP($y_f$)$=96.8\%$. Point RMSE remains close to the minimum (2.95 vs 2.89 at $K=0.5$). Thus $K<1$ on the normalized-weight scale acts as a **Term 2 re-inflation dial** for this estimand — complementary to the Section 6 recommendation of $K=1$ raw weights when the target is PP($y$) with Term 2 collapsed.
+
+4. **Best RMSE vs best coverage.** Minimum RMSE($\mu_f$) occurs near $K=0.5$ (2.894) with only 87.8% mean-surface coverage. $K=0.1$ trades a small RMSE increase for near-nominal Cover($\theta$). Method choice should state whether the priority is point recovery or honest uncertainty for $\theta$.
+
+5. **Unit-sum weights ($M=1$) over-inflate Term 2.** SE ratio $\approx 6.6$, Cover($\theta$)$=100\%$, and RMSE jumps to 5.72. This empirically validates Section 4’s warning that setting $M\ll n$ (here $M=1$) leaves Term 2 dominant: intervals are far too wide and point estimation deteriorates.
+
+6. **Implication for practice.**  
+   - For **PP of $y$ under a well-aligned DGP** (Section 6): raw Kim–Rao ($K=1$) remains the preferred default.  
+   - For **population mean-surface recovery under informative sampling with incomplete covariates** (this section): start from mean-1 (`weight_norm`) weights **without** per-draw $\sum w^*=n$ forced renorm, and calibrate $K$ so that Est. SE / Emp. SE $\approx 1$ (here $K\approx 0.1$). Do **not** use $\sum w=1$ scaling.  
+   - Always report both RMSE and coverage; $K$ that minimizes RMSE need not maximize interval calibration.
+
+### 7.6 OOB-selected $K$ vs grid (1,000 replications)
+
+Section 3.2 proposes selecting $K$ by cumulative Kim–Rao OOB MSE. We ran that procedure on the same informative Friedman design: short calibration MCMC over a candidate grid, then full MCMC at the selected $K^*$.
+
+| Method | Mean $K^*$ | SD($K^*$) | Bias | Emp. SE | Est. SE | SE ratio | Cover($\theta$) | RMSE($\mu_f$) | PP($y_f$) |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| **A_OOB** (`weight_norm`) | **1.00** | 0.016 | −0.083 | 0.227 | 0.197 | 0.868 | **86.9%** | **2.910** | **94.5%** |
+| **B_OOB** (raw weights) | **4.64** | 4.05 | −0.434 | 0.228 | 0.050 | 0.218 | **7.4%** | 6.045 | 40.6% |
+
+*Source: `data/friedman_results_oob/report_table.csv`. Candidate grids: A $\{0.01,0.05,0.1,0.2,0.5,1\}$; B $\{0.5,1,2,5,10\}$.*
+
+**A_OOB detail.** In 999/1,000 replications OOB selected $K^*=1.0$ (once $K^*=0.5$). Performance matches Section 7.3 at $K=1$ almost exactly — **not** the coverage-optimal $K\approx 0.1$.
+
+**B_OOB detail.** Selected $K^*$ is unstable (counts: $K=10$: 341; $K=1$: 319; $K=2$: 152; $K=5$: 114; $K=0.5$: 74). Larger $K$ further collapses Term 2 on the raw-weight scale, yielding catastrophic Cover($\theta$).
+
+**Interpretation.** OOB loss is a **prediction** criterion (MSE of $y$ on held-out PSUs). It therefore tracks the RMSE / PP($y$) trade-off, not Cover($\theta$). For mean-surface interval calibration, OOB cannot replace a coverage- or SE-ratio–targeted $K$ (Section 7.3). For **imputation / predictive uses**, A_OOB’s choice $K^*=1$ on `weight_norm` is appropriate and aligns with Section 6’s PP($y$) default.
+
+### 7.7 Rejected alternative: bootstrap weights for trees only (“fixed leaf”)
+
+A natural conjecture is that design variance (Term 1) should enter **only** through tree structure, while leaf parameters $\mu_l$ should be drawn with **fixed uniform weights** (all $w_i=1$), decoupling Term 1 from Term 2 without tuning $K$.
+
+**Modification.** At each MCMC iteration: draw $\mathbf{w}^*\sim\mathcal{L}_*$ (Kim–Rao); use $\mathbf{w}^*$ in the integrated MH grow/prune likelihood; draw leaf $\mu_l$ with $w_i\equiv 1$; retain $n$-scaled $\mathbf{w}^*$ for the $\sigma^2$ update.
+
+| Method | $K$ | Bias | Emp. SE | Est. SE | SE ratio | Cover($\theta$) | RMSE($\mu_f$) | PP($y_f$) |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|
+| A_FixedLeaf | 0.1 | −0.436 | 0.184 | 0.046 | **0.251** | **3.1%** | 2.949 | 94.9% |
+| A_FixedLeaf | 1.0 | −0.436 | 0.185 | 0.044 | **0.238** | **3.1%** | 2.915 | 94.3% |
+| B_FixedLeaf | 1.0 | −0.437 | 0.191 | 0.065 | **0.340** | **5.9%** | 3.320 | 91.9% |
+
+*Source: `data/friedman_results_fixed_leaf/report_table.csv` (3,000 replications). Code archived under `scripts/archive/fixed_leaf/`.*
+
+**Verdict: reject.** Cover($\theta$) collapses to $\approx$3–6% for all three settings — **worse** than coupled Method A at any $K$ on the grid. Est. SE is far below Emp. SE (SE ratio $\approx 0.25$). Bias $\approx -0.44$ matches the over-concentrated large-$K$ end of the A2 grid ($K=20$), not the well-calibrated $K=0.1$ row. PP($y_f$) remains near 95% for Method A variants (the $\sigma^2$ buffer again), underscoring that predictive coverage is **not** a diagnostic of mean-surface calibration.
+
+**Why it fails.** Uniform leaf weights force every leaf draw into an $M\approx n_l$ (unweighted) precision regime irrespective of $\mathbf{w}^*$. That collapses the leaf contribution to Term 2 while tree-only Kim–Rao resampling does **not** restore enough between-draw variability in $\bar f$ to match Emp. SE of $\theta$. Design-aware leaf weighting is therefore **essential** for sandwich-like Term 1 to register in the mean-surface posterior; restricting $\mathbf{w}^*$ to MH tree acceptance is not a substitute.
+
+**Implication.** The working one-step architecture keeps $\mathbf{w}^*$ in the leaf Gibbs updates (as in `bart_mcmc.cpp`). Do not use the fixed-leaf variant.

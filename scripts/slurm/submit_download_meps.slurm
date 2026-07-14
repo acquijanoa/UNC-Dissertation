@@ -8,17 +8,22 @@
 #SBATCH -p general
 
 # ─── Download MEPS Data — Longleaf SLURM Submit Script ──────────────────────
+# Submit from anywhere:
+#   sbatch scripts/slurm/submit_download_meps.slurm
 
 set -euo pipefail
 
-# Purge modules and load R 4.4.0
+# SLURM copies the batch script to spool; use the directory where sbatch was run
+PROJ_ROOT="${SLURM_SUBMIT_DIR:-$(pwd)}"
+cd "${PROJ_ROOT}"
+mkdir -p logs
+
 module purge
 module load r/4.4.0
 
-# Print status info
 echo "=== Starting download_meps.R | $(date) ==="
+echo "Project root: ${PROJ_ROOT}"
 
-# Execute R script
 Rscript scripts/download_meps.R
 
 echo "=== Done | $(date) ==="
